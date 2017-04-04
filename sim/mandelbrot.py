@@ -68,7 +68,7 @@ def main_gui():
 def fix_point(val, n_bit, decimals):
     mask = int(2**n_bit)-1
     val_int = int( val * 2**(n_bit-decimals-1)) & mask
-    format ='0x{:0' + '{:d}'.format(n_bit//4) +'x}'
+    format ='0x{:0' + '{:d}'.format(math.ceil(n_bit/4)) +'x}'
     return format.format(val_int)
 
 
@@ -79,8 +79,8 @@ def main_test_fix_point():
         print('{},  -> {}'.format(f, fix_point(f, 16, 3)))
 
 
-NBIT=16
-DEC = 3
+NBIT=18
+DEC = 4
 
 def mandelbrot_test_vector():
 
