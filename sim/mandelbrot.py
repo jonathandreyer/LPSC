@@ -79,9 +79,11 @@ def main_test_fix_point():
         print('{},  -> {}'.format(f, fix_point(f, 16, 3)))
 
 
-def main():
-    NBIT=16
-    DEC = 3
+NBIT=16
+DEC = 3
+
+def mandelbrot_test_vector():
+
     test_vector = (
         0.5 + .25j,
         .5 + .3j,
@@ -94,6 +96,52 @@ def main():
 
     for c in test_vector:
         print('complex "{}" = [re={}, img={}] -> mandelbrot = "{}"'.format(c, fix_point(c.real, NBIT, DEC), fix_point(c.imag, NBIT, DEC), mandelbrot(c)))
+
+
+
+def one_loop_test_vector():
+
+    test_vector = (
+        ((.5 +.5j), (.5 +.5j)),
+        ((.5 + .5j), (.0 +0j)),
+        ((.5 + .5j), (.0 + 0j)),
+        ((2 + 1.5j), (.0 + 0j)),
+        (0.5 + .25j, .5 + .3j),
+        (.7 + .4j, -.4 + .7j),
+        (-0.6 - .8j, .8 - .7j),
+    )
+
+    def mandel(z, c):
+        return z**2 + c
+
+    def str_clx_fix(var, value):
+        return '{}={}[re={}, img={}]'.format(var, value, fix_point(value.real, NBIT, DEC), fix_point(value.imag, NBIT, DEC))
+
+    for zi, ci in test_vector:
+        print(str_clx_fix('Zi', zi) + ', ' + str_clx_fix('Ci', ci) + ' -> ' + str_clx_fix('Zi+1', mandel(zi, ci)) + ', Diverge={}'.format(abs(zi)>2))
+
+
+
+
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--show', action='store_true', default=False, help='show the calculate mandelbrot')
+    parser.add_argument('-f', '--full-vector', action='store_true', default=False, help='Show the test vector for the full mandelbrot calculation')
+    parser.add_argument('-p', '--partial-vector', action='store_true', default=False, help='Show the test vector for one mandelbrot calcaution step')
+
+
+    args = parser.parse_args()
+
+    if args.show:
+        main_gui()
+
+    if args.full_vector:
+        mandelbrot_test_vector()
+
+    if args.partial_vector:
+        one_loop_test_vector()
 
 if __name__ == '__main__':
     import sys
