@@ -7,7 +7,7 @@ entity MandelbrotComplexCalculator is
   generic (
            Q_WIDTH      : integer := 18; --Q4.13
            P_WITDH      : integer := 13
-           );
+          );
 
   port (
         clk_i           : in  std_logic;
@@ -21,11 +21,11 @@ entity MandelbrotComplexCalculator is
         z_re_1_o        : out std_logic_vector(Q_WIDTH-1 downto 0);
         z_im_1_o        : out std_logic_vector(Q_WIDTH-1 downto 0);
         isDivergent_o   : out std_logic
-        );
+       );
 
 end entity MandelbrotComplexCalculator;
 
-architecture MandelbrotComplexCalculator of MandelbrotComplexCalculator is
+architecture Behavioral of MandelbrotComplexCalculator is
 
   constant MULT_WIDTH           : integer := Q_WIDTH * 2;                       -- (18*2)    = 36
   constant MULT_PRECISION_WITDH : integer := (P_WITDH * 2) - 1;                 -- (13*2)-1  = 25
@@ -98,4 +98,4 @@ begin
 
   isDivergent_o <= isDivergent_s;
 
-end architecture MandelbrotComplexCalculator;
+end architecture Behavioral;

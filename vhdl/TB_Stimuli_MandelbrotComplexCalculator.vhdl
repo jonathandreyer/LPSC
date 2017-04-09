@@ -21,11 +21,11 @@ entity TB_Stimuli_IP_MandelbrotComplexCalculator is
         z_re_1_i        : in  std_logic_vector(SIZE-1 downto 0);
         z_im_1_i        : in  std_logic_vector(SIZE-1 downto 0);
         isDivergent_i   : in  std_logic
-        );
+       );
 
 end entity TB_Stimuli_IP_MandelbrotComplexCalculator;
 
-architecture behaviour of TB_Stimuli_IP_MandelbrotComplexCalculator is
+architecture Behavioral of TB_Stimuli_IP_MandelbrotComplexCalculator is
 
   --Declaration du composant UUT
 
@@ -216,4 +216,4 @@ begin
 
       END PROCESS;
 
-end architecture behaviour;
+end architecture Behavioral;
