@@ -12,6 +12,7 @@ entity MandelbrotCounter is
         clk_i           : in  std_logic;
         rst_i           : in  std_logic;
         enable_i        : in  std_logic;
+        clear_i         : in  std_logic;
         valuecounter_o  : out std_logic_vector(SIZE-1 downto 0)
        );
 
@@ -28,7 +29,9 @@ begin
       if rst_i = '0' then
         counter_s <= (others => '0');
       elsif rising_edge(clk_i) then
-        if enable_i = '1' then
+        if clear_i = '1' then
+          counter_s <= (others => '0');
+        elsif enable_i = '1' then
           counter_s <= unsigned(counter_s) + 1;
         end if;
       end if;

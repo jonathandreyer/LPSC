@@ -36,6 +36,7 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
   signal z_im_1_s : std_logic_vector(SIZE-1 downto 0);
 
   signal enable_counter_s : std_logic;
+  signal clear_counter_s : std_logic;
   signal counter_s : std_logic_vector(SIZE_ITER-1 downto 0);
 
   component MandelbrotFSM
@@ -47,14 +48,15 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
           clk_i             : in  std_logic;
           rst_i             : in  std_logic;
           start_fsm_i       : in  std_logic;
-          enable_complex_i  : in  std_logic;
           isDivergent_i     : in  std_logic;
           z_re_1_i          : in  std_logic_vector(SIZE-1 downto 0);
           z_im_1_i          : in  std_logic_vector(SIZE-1 downto 0);
           iteration_i       : in  std_logic_vector(SIZE_ITER-1 downto 0);
+          enable_complex_o  : out std_logic;
           z_re_o            : out std_logic_vector(SIZE-1 downto 0);
           z_im_o            : out std_logic_vector(SIZE-1 downto 0);
           enable_counter_o  : out std_logic;
+          clear_counter_o   : out std_logic;
           finished_o        : out std_logic
          );
   end component MandelbrotFSM;
@@ -67,6 +69,7 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
           clk_i           : in  std_logic;
           rst_i           : in  std_logic;
           enable_i        : in  std_logic;
+          clear_i         : in  std_logic;
           valuecounter_o  : out std_logic_vector(SIZE-1 downto 0)
          );
   end component MandelbrotCounter;
@@ -102,7 +105,7 @@ begin
               clk_i            => clk_i,
               rst_i            => rst_i,
               start_fsm_i      => start_i,
-              enable_complex_i => enable_complex_s,
+              enable_complex_o => enable_complex_s,
               isDivergent_i    => isDivergent_s,
               z_re_1_i         => z_re_1_s,
               z_im_1_i         => z_im_1_s,
@@ -110,6 +113,7 @@ begin
               z_re_o           => z_re_s,
               z_im_o           => z_im_s,
               enable_counter_o => enable_counter_s,
+              clear_counter_o  => clear_counter_s,
               finished_o       => finish_o
              );
 
@@ -121,6 +125,7 @@ begin
               clk_i          => clk_i,
               rst_i          => rst_i,
               enable_i       => enable_counter_s,
+              clear_i        => clear_counter_s,
               valuecounter_o => counter_s
              );
 
