@@ -5,7 +5,7 @@ use ieee.std_logic_1164.all;
 entity MandelbrotCounter is
 
   generic (
-           SIZE : integer := 16
+           SIZE : integer := 8
           );
 
   port (
