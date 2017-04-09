@@ -17,23 +17,23 @@ entity MandelbrotCounter is
 
 end entity MandelbrotCounter;
 
-architecture Behavioral of MandelbrotCounter is
+architecture Behavioral_Counter of MandelbrotCounter is
 
 	signal counter_s : std_logic_vector(SIZE-1 downto 0);
 
 begin
 
   process (clk_i, rst_i)
-  	begin
-  		if rst_i = '0' then
-  			counter_s <= (OTHERS => '0');
-  		elsif rising_edge(clk_i) then
-  			if enable = '1' then
-  				counter_s <= unsigned(counter_s) + 1;
+    begin
+      if rst_i = '0' then
+        counter_s <= (others => '0');
+      elsif rising_edge(clk_i) then
+        if enable_i = '1' then
+          counter_s <= unsigned(counter_s) + 1;
         end if;
       end if;
     end process;
 
   valuecounter_o <= counter_s;
 
-end architecture Behavioral;
+end architecture Behavioral_Counter;

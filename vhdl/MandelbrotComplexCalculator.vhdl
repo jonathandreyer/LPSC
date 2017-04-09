@@ -25,7 +25,7 @@ entity MandelbrotComplexCalculator is
 
 end entity MandelbrotComplexCalculator;
 
-architecture Behavioral of MandelbrotComplexCalculator is
+architecture Behavioral_ComplexCalculator of MandelbrotComplexCalculator is
 
   constant MULT_WIDTH           : integer := Q_WIDTH * 2;                       -- (18*2)    = 36
   constant MULT_PRECISION_WITDH : integer := (P_WITDH * 2) - 1;                 -- (13*2)-1  = 25
@@ -98,4 +98,4 @@ begin
 
   isDivergent_o <= isDivergent_s;
 
-end architecture Behavioral;
+end architecture Behavioral_ComplexCalculator;
