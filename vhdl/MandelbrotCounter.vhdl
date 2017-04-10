@@ -26,7 +26,7 @@ begin
 
   process (clk_i, rst_i)
     begin
-      if rst_i = '0' then
+      if rst_i = '1' then
         counter_s <= (others => '0');
       elsif rising_edge(clk_i) then
         if clear_i = '1' then

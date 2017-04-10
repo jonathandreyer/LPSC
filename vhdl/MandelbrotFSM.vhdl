@@ -46,7 +46,7 @@ begin
 
   process(clk_i, rst_i)
     begin
-      if rst_i = '0' then
+      if rst_i = '1' then
         finish_s <= '0';
         state <= c_INIT;
       elsif rising_edge(clk_i) then
