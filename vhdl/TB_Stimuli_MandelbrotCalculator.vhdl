@@ -35,12 +35,6 @@ architecture Behavioral of TB_Stimuli_IP_MandelbrotCalculator is
   	SIGNAL error_number : INTEGER   := 0;
   	SIGNAL clk_gen      : std_logic := '0';
 
-    constant SIZE_BUS   : integer := 18;
-
-    signal z_re_1_attendu : std_logic_vector(SIZE-1 downto 0);
-    signal z_im_1_attendu : std_logic_vector(SIZE-1 downto 0);
-    signal div_attendu    : std_logic;
-
 begin
 
   --Intanciation du composant UUT
@@ -91,7 +85,7 @@ begin
           start_o <= '1';
           sim_cycle(1);
           start_o <= '0';
-          sim_cycle(200);
+          sim_cycle(150);
       END execute_mandebrot;
 
       --********** PROCEDURE "check_result_mandelbrot" **********
@@ -129,7 +123,7 @@ begin
 
 
         --End simu
-        sim_cycle(3);
+        sim_cycle(20);
 
         sim_end <= TRUE;
         wait;
