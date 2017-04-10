@@ -150,5 +150,6 @@ begin
 
   z_re_o <= z_re_1_s;
   z_im_o <= z_im_1_s;
+  iteration_o <= counter_s;
 
 end architecture Behavioral_Calculator;
