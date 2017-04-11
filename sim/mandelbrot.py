@@ -104,7 +104,6 @@ def one_loop_test_vector():
     test_vector = (
         ((.5 +.5j), (.5 +.5j)),
         ((.5 + .5j), (.0 +0j)),
-        ((.5 + .5j), (.0 + 0j)),
         ((2 + 1.5j), (.0 + 0j)),
         (0.5 + .25j, .5 + .3j),
         (.7 + .4j, -.4 + .7j),
@@ -117,8 +116,13 @@ def one_loop_test_vector():
     def str_clx_fix(var, value):
         return '{}={}[re={}, img={}]'.format(var, value, fix_point(value.real, NBIT, DEC), fix_point(value.imag, NBIT, DEC))
 
+    i = 0
     for zi, ci in test_vector:
-        print(str_clx_fix('Zi', zi) + ', ' + str_clx_fix('Ci', ci) + ' -> ' + str_clx_fix('Zi+1', mandel(zi, ci)) + ', Diverge={}'.format(abs(zi)>2))
+        i += 1
+        print()
+        print('case {}:'.format(i))
+        print(str_clx_fix('Zi', zi) + ', ' + str_clx_fix('Ci', ci) )
+        print(' -> ' + str_clx_fix('Zi+1', mandel(zi, ci)) + ', Diverge={}'.format(abs(zi)>2))
 
 
 
