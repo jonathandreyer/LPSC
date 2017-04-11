@@ -46,17 +46,6 @@ architecture Behavioral_ComplexCalculator of MandelbrotComplexCalculator is
 
 begin
 
-  --TODO better way???
-  --cr_s <= std_logic_vector(resize(signed(c_re_i), cr_s'length));
-  cr_s <= ('1' & ONES(MULT_WIDTH-2 downto Z_1_LEFT_WIDTH+1) & c_re_i(Q_WIDTH-2 downto 0) & ZEROS(Z_1_RIGHT_WIDTH-1 downto 0)) when c_re_i(c_re_i'left) = '1' else
-          ('0' & ZEROS(MULT_WIDTH-2 downto Z_1_LEFT_WIDTH+1) & c_re_i(Q_WIDTH-2 downto 0) & ZEROS(Z_1_RIGHT_WIDTH-1 downto 0));
-  --ci_s <= std_logic_vector(resize(signed(c_im_i), ci_s'length));
-  ci_s <= ('1' & ONES(MULT_WIDTH-2 downto Z_1_LEFT_WIDTH+1) & c_im_i(Q_WIDTH-2 downto 0) & ZEROS(Z_1_RIGHT_WIDTH-1 downto 0)) when c_im_i(c_im_i'left) = '1' else
-          ('0' & ZEROS(MULT_WIDTH-2 downto Z_1_LEFT_WIDTH+1) & c_im_i(Q_WIDTH-2 downto 0) & ZEROS(Z_1_RIGHT_WIDTH-1 downto 0));
-
-  z_norm_limit_s <= ('1' & ONES(MULT_WIDTH-2 downto Z_1_LEFT_WIDTH+1) & z_norm_limit_i(Q_WIDTH-2 downto 0) & ZEROS(Z_1_RIGHT_WIDTH-1 downto 0)) when z_norm_limit_i(z_norm_limit_i'left) = '1' else
-                    ('0' & ZEROS(MULT_WIDTH-2 downto Z_1_LEFT_WIDTH+1) & z_norm_limit_i(Q_WIDTH-2 downto 0) & ZEROS(Z_1_RIGHT_WIDTH-1 downto 0));
-
   zr_pow2_s    <= std_logic_vector(signed(z_re_i) * signed(z_re_i));
   zi_pow2_s    <= std_logic_vector(signed(z_im_i) * signed(z_im_i));
   zr_mult_zi_s <= std_logic_vector(signed(z_re_i) * signed(z_im_i));
