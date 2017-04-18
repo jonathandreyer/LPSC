@@ -5,7 +5,8 @@ use ieee.std_logic_1164.all;
 entity TB_Top_IP_MandelbrotComplexCalculator is
 
   generic (
-           SIZE  : integer := 18
+           SIZE       : integer := 18;
+           FRACTIONAL : integer := 13
           );
 
 end entity TB_Top_IP_MandelbrotComplexCalculator;
@@ -25,6 +26,10 @@ architecture Behavioral of TB_Top_IP_MandelbrotComplexCalculator is
   signal isDivergent  : std_logic;
 
   component MandelbrotComplexCalculator
+    generic (
+             SIZE       : integer := SIZE;
+             FRACTIONAL : integer := FRACTIONAL
+            );
     port (
           clk_i           : in  std_logic;
           rst_i           : in  std_logic;
