@@ -1,5 +1,4 @@
 library ieee;
-use ieee.std_logic_arith.all;
 use ieee.std_logic_1164.all;
 
 entity TB_Top_IP_MandelbrotComplexCalculator is
@@ -27,8 +26,8 @@ architecture Behavioral of TB_Top_IP_MandelbrotComplexCalculator is
 
   component MandelbrotComplexCalculator
     generic (
-             SIZE       : integer := SIZE;
-             FRACTIONAL : integer := FRACTIONAL
+             SIZE       : integer;
+             FRACTIONAL : integer
             );
     port (
           clk_i           : in  std_logic;

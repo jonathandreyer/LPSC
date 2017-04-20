@@ -1,12 +1,13 @@
 library ieee;
-use ieee.std_logic_arith.all;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity MandelbrotFSM is
 
   generic (
            SIZE       : integer := 18;
-           SIZE_ITER  : integer := 8
+           SIZE_ITER  : integer := 8;
+           MAX_ITER   : integer := 100
           );
 
   port (
@@ -16,7 +17,6 @@ entity MandelbrotFSM is
         isDivergent_i       : in  std_logic;
         z_re_1_i            : in  std_logic_vector(SIZE-1 downto 0);
         z_im_1_i            : in  std_logic_vector(SIZE-1 downto 0);
-        end_counter_i       : in  std_logic;
         iteration_i         : in  std_logic_vector(SIZE_ITER-1 downto 0);
         enable_complex_o    : out std_logic;
         z_re_o              : out std_logic_vector(SIZE-1 downto 0);
@@ -64,7 +64,7 @@ begin
             state <= c_CALC;
 
           when c_CALC =>
-            if (end_counter_i = '1') or (isDivergent_i = '1') then
+            if (unsigned(iteration_i) >= MAX_ITER) or (isDivergent_i = '1') then
               state <= c_END;
             end if;
 
@@ -99,7 +99,7 @@ begin
   clear_counter_o <= '1' when state = c_LOAD else
                      '0';
 
-  end_value_counter_o <= iteration_i when state = c_END else
+  end_value_counter_o <= std_logic_vector(unsigned(iteration_i) - 1) when state = c_END else
                          (others => '0');
 
   finished_o <= '1' when state = c_END else

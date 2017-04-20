@@ -1,6 +1,6 @@
 library ieee;
-use ieee.std_logic_arith.all;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity TB_Stimuli_IP_MandelbrotCalculator is
 
@@ -154,9 +154,9 @@ begin
         execute_mandebrot;
         check_result_mandelbrot_light(1);
 
-        --C_Re = 2.0, C_Im = 2.0 -> Iteration = 1
+        --C_Re = 2.0, C_Im = 2.0 -> Iteration = 2
         assign_mandelbrot("00" & X"4000", "00" & X"4000");
-        assign_ref_mandelbrot(X"01", "00" & X"0000", "00" & X"2000");
+        assign_ref_mandelbrot(X"02", "00" & X"0000", "00" & X"2000");
         execute_mandebrot;
         check_result_mandelbrot_light(2);
 

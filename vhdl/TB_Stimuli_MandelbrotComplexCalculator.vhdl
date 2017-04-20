@@ -1,12 +1,11 @@
 library ieee;
-use ieee.std_logic_arith.all;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity TB_Stimuli_IP_MandelbrotComplexCalculator is
 
   generic (
            SIZE  : integer := 18
-           --COMMA : integer := 12
            );
   port (
         clk             : out std_logic;

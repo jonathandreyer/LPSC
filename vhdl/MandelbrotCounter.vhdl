@@ -1,12 +1,11 @@
 library ieee;
-use ieee.std_logic_arith.all;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity MandelbrotCounter is
 
   generic (
-           SIZE       : integer := 8;
-           MAXCOUNTER : integer := 100
+           SIZE : integer := 8
           );
 
   port (
@@ -14,7 +13,6 @@ entity MandelbrotCounter is
         rst_i           : in  std_logic;
         enable_i        : in  std_logic;
         clear_i         : in  std_logic;
-        endvalue_o      : out std_logic;
         valuecounter_o  : out std_logic_vector(SIZE-1 downto 0)
        );
 
@@ -22,7 +20,6 @@ end entity MandelbrotCounter;
 
 architecture Behavioral_Counter of MandelbrotCounter is
 
-  signal endvalue_s : std_logic;
   signal counter_s  : std_logic_vector(SIZE-1 downto 0);
 
 begin
@@ -30,21 +27,16 @@ begin
   process (clk_i, rst_i)
     begin
       if rst_i = '1' then
-        endvalue_s <= '0';
         counter_s <= (others => '0');
       elsif rising_edge(clk_i) then
         if clear_i = '1' then
-          endvalue_s <= '0';
           counter_s  <= (others => '0');
-        elsif unsigned(counter_s) >= MAXCOUNTER then
-          endvalue_s <= '1';
         elsif enable_i = '1' then
-          counter_s <= unsigned(counter_s) + 1;
+          counter_s <= std_logic_vector(unsigned(counter_s) + 1);
         end if;
       end if;
     end process;
 
-  endvalue_o <= endvalue_s;
   valuecounter_o <= counter_s;
 
 end architecture Behavioral_Counter;

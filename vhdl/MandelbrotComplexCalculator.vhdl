@@ -33,7 +33,6 @@ architecture Behavioral_ComplexCalculator of MandelbrotComplexCalculator is
   signal zi_pow2_s             : std_logic_vector(SIZE_POW2-1 downto 0);
   signal zr_mult_zi_s          : std_logic_vector(SIZE_POW2-1 downto 0);
   signal zr_mult_zi_time2_s    : std_logic_vector(SIZE_POW2-1 downto 0);
-  signal z_norm_limit_s        : std_logic_vector(SIZE_POW2-1 downto 0);
 
   signal zr_pow2_scd_s         : std_logic_vector(SIZE-1 downto 0);
   signal zi_pow2_scd_s         : std_logic_vector(SIZE-1 downto 0);
@@ -60,10 +59,6 @@ begin
   zr_mult_zi_s <= std_logic_vector(signed(z_re_i) * signed(z_im_i));
   zr_mult_zi_time2_s <= std_logic_vector(shift_left(signed(zr_mult_zi_s), 1));
 
-  z_norm_limit_s <= ('1' & ONES(MULT_WIDTH-2 downto Z_1_LEFT_WIDTH+3) & z_norm_limit_i(SIZE-1 downto 0) & ZEROS(Z_1_RIGHT_WIDTH downto 0))
-                            when z_norm_limit_i(z_norm_limit_i'left) = '1' else
-                    ('0' & ZEROS(MULT_WIDTH-2 downto Z_1_LEFT_WIDTH+3) & z_norm_limit_i(SIZE-1 downto 0) & ZEROS(Z_1_RIGHT_WIDTH downto 0));
-
   zr_pow2_scd_s <= zr_pow2_s(SIZE + FRACTIONAL-1 downto FRACTIONAL);
   zi_pow2_scd_s <= zi_pow2_s(SIZE + FRACTIONAL-1 downto FRACTIONAL);
   zr_mult_zi_time2_scd_s <= zr_mult_zi_time2_s(SIZE + FRACTIONAL-1 downto FRACTIONAL);
@@ -77,9 +72,9 @@ begin
       elsif rising_edge(clk_i) then
         if enable_i = '1' then
           zr_calc_s <= std_logic_vector((signed(zr_pow2_scd_s) - signed(zi_pow2_scd_s)) + signed(c_re_i));
-          zi_calc_s <= std_logic_vector( signed(zr_mult_zi_time2_scd_s) + signed(c_im_i));
+          zi_calc_s <= std_logic_vector(signed(zr_mult_zi_time2_scd_s) + signed(c_im_i));
 
-          if signed(signed(zr_pow2_s) + signed(zi_pow2_s)) > signed(z_norm_limit_s) then
+          if signed(signed(zr_pow2_scd_s) + signed(zi_pow2_scd_s)) > signed(z_norm_limit_i) then
             isDivergent_s <= '1';
           else
             isDivergent_s <= '0';

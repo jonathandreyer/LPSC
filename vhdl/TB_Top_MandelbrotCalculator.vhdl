@@ -1,12 +1,13 @@
 library ieee;
-use ieee.std_logic_arith.all;
 use ieee.std_logic_1164.all;
 
 entity TB_Top_IP_MandelbrotCalculator is
 
   generic (
-           SIZE       : integer := 18;
-           SIZE_ITER  : integer := 8
+           SIZE           : integer := 18;
+           FRACTIONAL     : integer := 13;
+           SIZE_ITER      : integer := 8;
+           MAX_ITERATION  : integer := 100
           );
 
 end entity TB_Top_IP_MandelbrotCalculator;
@@ -25,8 +26,10 @@ architecture Behavioral of TB_Top_IP_MandelbrotCalculator is
 
   component MandelbrotCalculator
     generic (
-             SIZE      : integer := 18;
-             SIZE_ITER : integer := 8
+             SIZE           : integer;
+             FRACTIONAL     : integer;
+             SIZE_ITER      : integer;
+             MAX_ITERATION  : integer
             );
     port (
           clk_i       : in  std_logic;
@@ -43,8 +46,8 @@ architecture Behavioral of TB_Top_IP_MandelbrotCalculator is
 
   component TB_Stimuli_IP_MandelbrotCalculator
     generic (
-             SIZE      : integer := 18;
-             SIZE_ITER : integer := 8
+             SIZE      : integer;
+             SIZE_ITER : integer
             );
     port (
           clk_o       : out std_logic;
@@ -63,8 +66,10 @@ begin
 
   DUT: MandelbrotCalculator
     generic map (
-                 SIZE      => SIZE,
-                 SIZE_ITER => SIZE_ITER
+                 SIZE           => SIZE,
+                 FRACTIONAL     => FRACTIONAL,
+                 SIZE_ITER      => SIZE_ITER,
+                 MAX_ITERATION  => MAX_ITERATION
                 )
     port map(
              clk_i          => clk_s,
