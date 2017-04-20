@@ -10,19 +10,20 @@ entity MandelbrotFSM is
           );
 
   port (
-        clk_i             : in  std_logic;
-        rst_i             : in  std_logic;
-        start_fsm_i       : in  std_logic;
-        isDivergent_i     : in  std_logic;
-        z_re_1_i          : in  std_logic_vector(SIZE-1 downto 0);
-        z_im_1_i          : in  std_logic_vector(SIZE-1 downto 0);
-        iteration_i       : in  std_logic_vector(SIZE_ITER-1 downto 0);
-        enable_complex_o  : out std_logic;
-        z_re_o            : out std_logic_vector(SIZE-1 downto 0);
-        z_im_o            : out std_logic_vector(SIZE-1 downto 0);
-        enable_counter_o  : out std_logic;
-        clear_counter_o   : out std_logic;
-        finished_o        : out std_logic
+        clk_i               : in  std_logic;
+        rst_i               : in  std_logic;
+        start_fsm_i         : in  std_logic;
+        isDivergent_i       : in  std_logic;
+        z_re_1_i            : in  std_logic_vector(SIZE-1 downto 0);
+        z_im_1_i            : in  std_logic_vector(SIZE-1 downto 0);
+        iteration_i         : in  std_logic_vector(SIZE_ITER-1 downto 0);
+        enable_complex_o    : out std_logic;
+        z_re_o              : out std_logic_vector(SIZE-1 downto 0);
+        z_im_o              : out std_logic_vector(SIZE-1 downto 0);
+        enable_counter_o    : out std_logic;
+        clear_counter_o     : out std_logic;
+        end_value_counter_o : out std_logic_vector(SIZE_ITER-1 downto 0);
+        finished_o          : out std_logic
        );
 
 end entity MandelbrotFSM;
@@ -37,40 +38,38 @@ architecture Behavioral_FSM of MandelbrotFSM is
   constant c_WAIT : t_state := "001";
   constant c_LOAD : t_state := "010";
   constant c_CALC : t_state := "011";
+  constant c_END  : t_state := "100";
 
   --Declare signals
   signal state : t_state;
-  signal finish_s : std_logic;
 
 begin
 
   process(clk_i, rst_i)
     begin
       if rst_i = '1' then
-        finish_s <= '0';
         state <= c_INIT;
       elsif rising_edge(clk_i) then
         case state is
           when c_INIT =>
-            if true then
-              state <= c_WAIT;
-            end if;
+            state <= c_WAIT;
 
           when c_WAIT =>
             if (start_fsm_i='1') then
-              finish_s <= '0';
               state <= c_LOAD;
             end if;
 
           when c_LOAD =>
-            if true then
-              state <= c_CALC;
-            end if;
+            state <= c_CALC;
 
           when c_CALC =>
-            if ((unsigned(iteration_i)>100) or (isDivergent_i='1')) then
-              finish_s <= '1';
-              state <= c_WAIT;
+            if ((unsigned(iteration_i)>=100) or (isDivergent_i='1')) then
+              state <= c_END;
+            end if;
+
+          when c_END =>
+            if (start_fsm_i='1') then
+              state <= c_LOAD;
             end if;
 
           when others =>
@@ -99,6 +98,10 @@ begin
   clear_counter_o <= '1' when state = c_LOAD else
                      '0';
 
-  finished_o <= finish_s;
+  end_value_counter_o <= iteration_i when state = c_END else
+                         (others => '0');
+
+  finished_o <= '1' when state = c_END else
+                '0';
 
 end architecture Behavioral_FSM;

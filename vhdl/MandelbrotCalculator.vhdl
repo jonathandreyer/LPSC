@@ -5,6 +5,7 @@ entity MandelbrotCalculator is
 
   generic (
            SIZE       : integer := 18;
+           FRACTIONAL : integer := 13;
            SIZE_ITER  : integer := 8
           );
 
@@ -24,8 +25,6 @@ end entity MandelbrotCalculator;
 
 architecture Behavioral_Calculator of MandelbrotCalculator is
 
-  constant Q_WIDTH : integer := SIZE;
-  constant P_WITDH : integer := SIZE-5;
   constant Z_NORM_LIMIT : std_logic_vector(SIZE-1 downto 0) := "001000000000000000";
 
   signal enable_complex_s : std_logic;
@@ -45,19 +44,20 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
              SIZE_ITER  : integer
             );
     port (
-          clk_i             : in  std_logic;
-          rst_i             : in  std_logic;
-          start_fsm_i       : in  std_logic;
-          isDivergent_i     : in  std_logic;
-          z_re_1_i          : in  std_logic_vector(SIZE-1 downto 0);
-          z_im_1_i          : in  std_logic_vector(SIZE-1 downto 0);
-          iteration_i       : in  std_logic_vector(SIZE_ITER-1 downto 0);
-          enable_complex_o  : out std_logic;
-          z_re_o            : out std_logic_vector(SIZE-1 downto 0);
-          z_im_o            : out std_logic_vector(SIZE-1 downto 0);
-          enable_counter_o  : out std_logic;
-          clear_counter_o   : out std_logic;
-          finished_o        : out std_logic
+          clk_i               : in  std_logic;
+          rst_i               : in  std_logic;
+          start_fsm_i         : in  std_logic;
+          isDivergent_i       : in  std_logic;
+          z_re_1_i            : in  std_logic_vector(SIZE-1 downto 0);
+          z_im_1_i            : in  std_logic_vector(SIZE-1 downto 0);
+          iteration_i         : in  std_logic_vector(SIZE_ITER-1 downto 0);
+          enable_complex_o    : out std_logic;
+          z_re_o              : out std_logic_vector(SIZE-1 downto 0);
+          z_im_o              : out std_logic_vector(SIZE-1 downto 0);
+          enable_counter_o    : out std_logic;
+          clear_counter_o     : out std_logic;
+          end_value_counter_o : out std_logic_vector(SIZE_ITER-1 downto 0);
+          finished_o          : out std_logic
          );
   end component MandelbrotFSM;
 
@@ -76,20 +76,20 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
 
   component MandelbrotComplexCalculator
     generic (
-             Q_WIDTH      : integer;
-             P_WITDH      : integer
+             SIZE       : integer;
+             FRACTIONAL : integer
             );
     port (
           clk_i           : in  std_logic;
           rst_i           : in  std_logic;
           enable_i        : in  std_logic;
-          c_re_i          : in  std_logic_vector(Q_WIDTH-1 downto 0);
-          c_im_i          : in  std_logic_vector(Q_WIDTH-1 downto 0);
-          z_re_i          : in  std_logic_vector(Q_WIDTH-1 downto 0);
-          z_im_i          : in  std_logic_vector(Q_WIDTH-1 downto 0);
-          z_norm_limit_i  : in  std_logic_vector(Q_WIDTH-1 downto 0);
-          z_re_1_o        : out std_logic_vector(Q_WIDTH-1 downto 0);
-          z_im_1_o        : out std_logic_vector(Q_WIDTH-1 downto 0);
+          c_re_i          : in  std_logic_vector(SIZE-1 downto 0);
+          c_im_i          : in  std_logic_vector(SIZE-1 downto 0);
+          z_re_i          : in  std_logic_vector(SIZE-1 downto 0);
+          z_im_i          : in  std_logic_vector(SIZE-1 downto 0);
+          z_norm_limit_i  : in  std_logic_vector(SIZE-1 downto 0);
+          z_re_1_o        : out std_logic_vector(SIZE-1 downto 0);
+          z_im_1_o        : out std_logic_vector(SIZE-1 downto 0);
           isDivergent_o   : out std_logic
          );
   end component MandelbrotComplexCalculator;
@@ -102,19 +102,20 @@ begin
                  SIZE_ITER => SIZE_ITER
                 )
     port map (
-              clk_i            => clk_i,
-              rst_i            => rst_i,
-              start_fsm_i      => start_i,
-              enable_complex_o => enable_complex_s,
-              isDivergent_i    => isDivergent_s,
-              z_re_1_i         => z_re_1_s,
-              z_im_1_i         => z_im_1_s,
-              iteration_i      => counter_s,
-              z_re_o           => z_re_s,
-              z_im_o           => z_im_s,
-              enable_counter_o => enable_counter_s,
-              clear_counter_o  => clear_counter_s,
-              finished_o       => finish_o
+              clk_i               => clk_i,
+              rst_i               => rst_i,
+              start_fsm_i         => start_i,
+              enable_complex_o    => enable_complex_s,
+              isDivergent_i       => isDivergent_s,
+              z_re_1_i            => z_re_1_s,
+              z_im_1_i            => z_im_1_s,
+              iteration_i         => counter_s,
+              z_re_o              => z_re_s,
+              z_im_o              => z_im_s,
+              enable_counter_o    => enable_counter_s,
+              clear_counter_o     => clear_counter_s,
+              end_value_counter_o => iteration_o,
+              finished_o          => finish_o
              );
 
   Counter: MandelbrotCounter
@@ -131,8 +132,8 @@ begin
 
   ComplexCalculator: MandelbrotComplexCalculator
     generic map (
-                 Q_WIDTH => Q_WIDTH,
-                 P_WITDH => P_WITDH
+                 SIZE       => SIZE,
+                 FRACTIONAL => FRACTIONAL
                 )
     port map (
               clk_i          => clk_i,
@@ -150,6 +151,5 @@ begin
 
   z_re_o <= z_re_1_s;
   z_im_o <= z_im_1_s;
-  iteration_o <= counter_s;
 
 end architecture Behavioral_Calculator;
