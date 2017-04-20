@@ -16,6 +16,7 @@ entity MandelbrotFSM is
         isDivergent_i       : in  std_logic;
         z_re_1_i            : in  std_logic_vector(SIZE-1 downto 0);
         z_im_1_i            : in  std_logic_vector(SIZE-1 downto 0);
+        end_counter_i       : in  std_logic;
         iteration_i         : in  std_logic_vector(SIZE_ITER-1 downto 0);
         enable_complex_o    : out std_logic;
         z_re_o              : out std_logic_vector(SIZE-1 downto 0);
@@ -55,7 +56,7 @@ begin
             state <= c_WAIT;
 
           when c_WAIT =>
-            if (start_fsm_i='1') then
+            if start_fsm_i = '1' then
               state <= c_LOAD;
             end if;
 
@@ -63,12 +64,12 @@ begin
             state <= c_CALC;
 
           when c_CALC =>
-            if ((unsigned(iteration_i)>=100) or (isDivergent_i='1')) then
+            if (end_counter_i = '1') or (isDivergent_i = '1') then
               state <= c_END;
             end if;
 
           when c_END =>
-            if (start_fsm_i='1') then
+            if  start_fsm_i = '1' then
               state <= c_LOAD;
             end if;
 

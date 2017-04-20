@@ -4,9 +4,10 @@ use ieee.std_logic_1164.all;
 entity MandelbrotCalculator is
 
   generic (
-           SIZE       : integer := 18;
-           FRACTIONAL : integer := 13;
-           SIZE_ITER  : integer := 8
+           SIZE           : integer := 18;
+           FRACTIONAL     : integer := 13;
+           SIZE_ITER      : integer := 8;
+           MAX_ITERATION  : integer := 100
           );
 
   port (
@@ -36,6 +37,7 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
 
   signal enable_counter_s : std_logic;
   signal clear_counter_s : std_logic;
+  signal end_counter_s : std_logic;
   signal counter_s : std_logic_vector(SIZE_ITER-1 downto 0);
 
   component MandelbrotFSM
@@ -50,6 +52,7 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
           isDivergent_i       : in  std_logic;
           z_re_1_i            : in  std_logic_vector(SIZE-1 downto 0);
           z_im_1_i            : in  std_logic_vector(SIZE-1 downto 0);
+          end_counter_i       : in  std_logic;
           iteration_i         : in  std_logic_vector(SIZE_ITER-1 downto 0);
           enable_complex_o    : out std_logic;
           z_re_o              : out std_logic_vector(SIZE-1 downto 0);
@@ -63,13 +66,15 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
 
   component MandelbrotCounter
     generic (
-             SIZE : integer
+             SIZE       : integer := 8;
+             MAXCOUNTER : integer := 100
             );
     port (
           clk_i           : in  std_logic;
           rst_i           : in  std_logic;
           enable_i        : in  std_logic;
           clear_i         : in  std_logic;
+          endvalue_o      : out std_logic;
           valuecounter_o  : out std_logic_vector(SIZE-1 downto 0)
          );
   end component MandelbrotCounter;
@@ -109,6 +114,7 @@ begin
               isDivergent_i       => isDivergent_s,
               z_re_1_i            => z_re_1_s,
               z_im_1_i            => z_im_1_s,
+              end_counter_i       => end_counter_s,
               iteration_i         => counter_s,
               z_re_o              => z_re_s,
               z_im_o              => z_im_s,
@@ -120,13 +126,15 @@ begin
 
   Counter: MandelbrotCounter
     generic map (
-                 SIZE => SIZE_ITER
+                 SIZE       => SIZE_ITER,
+                 MAXCOUNTER => MAX_ITERATION
                 )
     port map (
               clk_i          => clk_i,
               rst_i          => rst_i,
               enable_i       => enable_counter_s,
               clear_i        => clear_counter_s,
+              endvalue_o     => end_counter_s,
               valuecounter_o => counter_s
              );
 
