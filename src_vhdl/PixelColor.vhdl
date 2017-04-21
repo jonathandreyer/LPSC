@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity MandelbrotColor is
+entity PixelColor is
 
   generic (
            SIZE : integer := 8
@@ -14,9 +14,9 @@ entity MandelbrotColor is
         b_o             : out std_logic_vector(SIZE-1 downto 0)
        );
 
-end entity MandelbrotColor;
+end entity PixelColor;
 
-architecture Behavioral_Color of MandelbrotColor is
+architecture Behavioral_Color of PixelColor is
 
   signal rgb_s  : std_logic_vector(SIZE-1 downto 0);
 
