@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity ManageGenerator is
+entity MandelbrotManageGenerator is
 
   port (
         clk_i               : in  std_logic;
@@ -11,9 +11,9 @@ entity ManageGenerator is
         next_value_1_o      : out std_logic
        );
 
-end entity ManageGenerator;
+end entity MandelbrotManageGenerator;
 
-architecture Behavioral_FSM of ManageGenerator is
+architecture Behavioral_FSM of MandelbrotManageGenerator is
 
   --Declare type, subtype
  subtype t_state is std_logic_vector(1 downto 0);
@@ -24,7 +24,9 @@ architecture Behavioral_FSM of ManageGenerator is
   constant c_WAIT  : t_state := "10";
 
   --Declare signals
-  signal state : t_state;
+  signal state          : t_state;
+  signal next_value_s   : std_logic;
+  signal next_value_1_s : std_logic;
 
 begin
 
@@ -51,16 +53,19 @@ begin
       end if;
   end process;
 
-  next_value_o <= '1' when state = c_START else
+  next_value_s <= '1' when state = c_START else
                   '0';
 
   process(clk_i, rst_i)
     begin
       if rst_i = '1' then
-        next_value_1_o <= '0';
+        next_value_1_s <= '0';
       elsif rising_edge(clk_i) then
-        next_value_1_o <= next_value_o;
+        next_value_1_s <= next_value_s;
       end if;
   end process;
+
+  next_value_o <= next_value_s;
+  next_value_1_o <= next_value_1_s;
 
 end architecture Behavioral_FSM;
