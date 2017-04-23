@@ -41,8 +41,8 @@ begin
       BEGIN
         IF sim_end = FALSE THEN
           clk_gen <= '1', '0' AFTER 1 ns;
-          clk_o   <= '1', '0' AFTER 5 ns, '1' AFTER 5 ns; --commenter si on teste une fonction combinatoire (pas de clock)
-          wait for 25 ns;
+          clk_o   <= '1', '0' AFTER 2 ns, '1' AFTER 7 ns; --commenter si on teste une fonction combinatoire (pas de clock)
+          wait for 10 ns;
         ELSE
           wait;
         END IF;
