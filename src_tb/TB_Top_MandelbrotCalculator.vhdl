@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity TB_Top_IP_MandelbrotCalculator is
+entity TB_Top_MandelbrotCalculator is
 
   generic (
            SIZE           : integer := 18;
@@ -10,9 +10,9 @@ entity TB_Top_IP_MandelbrotCalculator is
            MAX_ITERATION  : integer := 100
           );
 
-end entity TB_Top_IP_MandelbrotCalculator;
+end entity TB_Top_MandelbrotCalculator;
 
-architecture Behavioral of TB_Top_IP_MandelbrotCalculator is
+architecture Behavioral of TB_Top_MandelbrotCalculator is
 
   signal clk_s          : std_logic;
   signal rst_s          : std_logic;
@@ -44,7 +44,7 @@ architecture Behavioral of TB_Top_IP_MandelbrotCalculator is
          );
   end component MandelbrotCalculator;
 
-  component TB_Stimuli_IP_MandelbrotCalculator
+  component TB_Stimuli_MandelbrotCalculator
     generic (
              SIZE      : integer;
              SIZE_ITER : integer
@@ -60,7 +60,7 @@ architecture Behavioral of TB_Top_IP_MandelbrotCalculator is
           iteration_i : in  std_logic_vector(SIZE_ITER-1 downto 0);
           finish_i    : in  std_logic
          );
-  end component TB_Stimuli_IP_MandelbrotCalculator;
+  end component TB_Stimuli_MandelbrotCalculator;
 
 begin
 
@@ -83,7 +83,7 @@ begin
              finish_o       => finished_s
              );
 
-  TB_Stimuli: TB_Stimuli_IP_MandelbrotCalculator
+  TB_Stimuli: TB_Stimuli_MandelbrotCalculator
     generic map (
                  SIZE      => SIZE,
                  SIZE_ITER => SIZE_ITER

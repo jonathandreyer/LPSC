@@ -1,16 +1,16 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity TB_Top_IP_MandelbrotComplexCalculator is
+entity TB_Top_MandelbrotComplexCalculator is
 
   generic (
            SIZE       : integer := 18;
            FRACTIONAL : integer := 13
           );
 
-end entity TB_Top_IP_MandelbrotComplexCalculator;
+end entity TB_Top_MandelbrotComplexCalculator;
 
-architecture Behavioral of TB_Top_IP_MandelbrotComplexCalculator is
+architecture Behavioral of TB_Top_MandelbrotComplexCalculator is
 
   signal clk          : std_logic;
   signal rst          : std_logic;
@@ -44,7 +44,10 @@ architecture Behavioral of TB_Top_IP_MandelbrotComplexCalculator is
          );
   end component MandelbrotComplexCalculator;
 
-  component TB_Stimuli_IP_MandelbrotComplexCalculator
+  component TB_Stimuli_MandelbrotComplexCalculator
+    generic (
+             SIZE  : integer
+             );
     port (
           clk             : out std_logic;
           rst_o           : out std_logic;
@@ -58,11 +61,15 @@ architecture Behavioral of TB_Top_IP_MandelbrotComplexCalculator is
           z_im_1_i        : in  std_logic_vector(SIZE-1 downto 0);
           isDivergent_i   : in  std_logic
          );
-  end component TB_Stimuli_IP_MandelbrotComplexCalculator;
+  end component TB_Stimuli_MandelbrotComplexCalculator;
 
 begin
 
   DUT: MandelbrotComplexCalculator
+    generic map (
+                 SIZE       => SIZE,
+                 FRACTIONAL => FRACTIONAL
+                )
     port map (
               clk_i          => clk,
               rst_i          => rst,
@@ -77,7 +84,10 @@ begin
               isDivergent_o  => isDivergent
              );
 
-  TB_Stimuli: TB_Stimuli_IP_MandelbrotComplexCalculator
+  TB_Stimuli: TB_Stimuli_MandelbrotComplexCalculator
+    generic map (
+                 SIZE       => SIZE
+                )
     port map (
               clk            => clk,
               rst_o          => rst,

@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity TB_Stimuli_IP_MandelbrotComplexCalculator is
+entity TB_Stimuli_MandelbrotComplexCalculator is
 
   generic (
            SIZE  : integer := 18
@@ -21,9 +21,9 @@ entity TB_Stimuli_IP_MandelbrotComplexCalculator is
         isDivergent_i   : in  std_logic
        );
 
-end entity TB_Stimuli_IP_MandelbrotComplexCalculator;
+end entity TB_Stimuli_MandelbrotComplexCalculator;
 
-architecture Behavioral of TB_Stimuli_IP_MandelbrotComplexCalculator is
+architecture Behavioral of TB_Stimuli_MandelbrotComplexCalculator is
 
   --Declaration du composant UUT
 
