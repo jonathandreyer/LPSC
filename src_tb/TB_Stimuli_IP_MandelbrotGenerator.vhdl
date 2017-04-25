@@ -75,7 +75,7 @@ begin
         --Desactivation du reset
         rst_o <= '0';
 
-        sim_cycle(8000000);
+        sim_cycle(24000000);
 
         --End simu
         sim_cycle(20);
