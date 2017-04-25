@@ -15,10 +15,14 @@ entity MandelbrotFSM is
         rst_i               : in  std_logic;
         start_fsm_i         : in  std_logic;
         isDivergent_i       : in  std_logic;
+        c_re_i              : in  std_logic_vector(SIZE-1 downto 0);
+        c_im_i              : in  std_logic_vector(SIZE-1 downto 0);
         z_re_1_i            : in  std_logic_vector(SIZE-1 downto 0);
         z_im_1_i            : in  std_logic_vector(SIZE-1 downto 0);
         iteration_i         : in  std_logic_vector(SIZE_ITER-1 downto 0);
         enable_complex_o    : out std_logic;
+        c_re_o              : out std_logic_vector(SIZE-1 downto 0);
+        c_im_o              : out std_logic_vector(SIZE-1 downto 0);
         z_re_o              : out std_logic_vector(SIZE-1 downto 0);
         z_im_o              : out std_logic_vector(SIZE-1 downto 0);
         enable_counter_o    : out std_logic;
@@ -42,7 +46,9 @@ architecture Behavioral_FSM of MandelbrotFSM is
   constant c_END  : t_state := "100";
 
   --Declare signals
-  signal state : t_state;
+  signal state  : t_state;
+  signal c_re_s : std_logic_vector(SIZE-1 downto 0);
+  signal c_im_s : std_logic_vector(SIZE-1 downto 0);
 
 begin
 
@@ -69,7 +75,7 @@ begin
             end if;
 
           when c_END =>
-            if  start_fsm_i = '1' then
+            if start_fsm_i = '1' then
               state <= c_LOAD;
             end if;
 
@@ -79,10 +85,21 @@ begin
       end if;
   end process;
 
-  z_re_o <= z_re_1_i        when state = c_CALC else
+  process(state, rst_i)
+    begin
+      if rst_i = '1' then
+        c_re_s <= (others => '0');
+        c_im_s <= (others => '0');
+      elsif state = c_LOAD then
+          c_re_s <= c_re_i;
+          c_im_s <= c_im_i;
+      end if;
+  end process;
+
+  z_re_o <= z_re_1_i  when state = c_CALC else
             (others => '0');
 
-  z_im_o <= z_im_1_i        when state = c_CALC else
+  z_im_o <= z_im_1_i  when state = c_CALC else
             (others => '0');
 
   enable_complex_o <= '1' when state = c_CALC else
@@ -99,5 +116,8 @@ begin
 
   finished_o <= '1' when state = c_END else
                 '0';
+
+  c_re_o <= c_re_s;
+  c_im_o <= c_im_s;
 
 end architecture Behavioral_FSM;

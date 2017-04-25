@@ -29,15 +29,17 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
   constant Z_NORM_LIMIT : std_logic_vector(SIZE-1 downto 0) := "001000000000000000";
 
   signal enable_complex_s : std_logic;
-  signal isDivergent_s : std_logic;
-  signal z_re_s : std_logic_vector(SIZE-1 downto 0);
-  signal z_im_s : std_logic_vector(SIZE-1 downto 0);
-  signal z_re_1_s : std_logic_vector(SIZE-1 downto 0);
-  signal z_im_1_s : std_logic_vector(SIZE-1 downto 0);
+  signal isDivergent_s    : std_logic;
+  signal c_re_s           : std_logic_vector(SIZE-1 downto 0);
+  signal c_im_s           : std_logic_vector(SIZE-1 downto 0);
+  signal z_re_s           : std_logic_vector(SIZE-1 downto 0);
+  signal z_im_s           : std_logic_vector(SIZE-1 downto 0);
+  signal z_re_1_s         : std_logic_vector(SIZE-1 downto 0);
+  signal z_im_1_s         : std_logic_vector(SIZE-1 downto 0);
 
   signal enable_counter_s : std_logic;
-  signal clear_counter_s : std_logic;
-  signal counter_s : std_logic_vector(SIZE_ITER-1 downto 0);
+  signal clear_counter_s  : std_logic;
+  signal counter_s        : std_logic_vector(SIZE_ITER-1 downto 0);
 
   component MandelbrotFSM
     generic (
@@ -50,10 +52,14 @@ architecture Behavioral_Calculator of MandelbrotCalculator is
           rst_i               : in  std_logic;
           start_fsm_i         : in  std_logic;
           isDivergent_i       : in  std_logic;
+          c_re_i              : in  std_logic_vector(SIZE-1 downto 0);
+          c_im_i              : in  std_logic_vector(SIZE-1 downto 0);
           z_re_1_i            : in  std_logic_vector(SIZE-1 downto 0);
           z_im_1_i            : in  std_logic_vector(SIZE-1 downto 0);
           iteration_i         : in  std_logic_vector(SIZE_ITER-1 downto 0);
           enable_complex_o    : out std_logic;
+          c_re_o              : out std_logic_vector(SIZE-1 downto 0);
+          c_im_o              : out std_logic_vector(SIZE-1 downto 0);
           z_re_o              : out std_logic_vector(SIZE-1 downto 0);
           z_im_o              : out std_logic_vector(SIZE-1 downto 0);
           enable_counter_o    : out std_logic;
@@ -110,9 +116,13 @@ begin
               start_fsm_i         => start_i,
               enable_complex_o    => enable_complex_s,
               isDivergent_i       => isDivergent_s,
+              c_re_i              => c_re_i,
+              c_im_i              => c_im_i,
               z_re_1_i            => z_re_1_s,
               z_im_1_i            => z_im_1_s,
               iteration_i         => counter_s,
+              c_re_o              => c_re_s,
+              c_im_o              => c_im_s,
               z_re_o              => z_re_s,
               z_im_o              => z_im_s,
               enable_counter_o    => enable_counter_s,
@@ -142,8 +152,8 @@ begin
               clk_i          => clk_i,
               rst_i          => rst_i,
               enable_i       => enable_complex_s,
-              c_re_i         => c_re_i,
-              c_im_i         => c_im_i,
+              c_re_i         => c_re_s,
+              c_im_i         => c_im_s,
               z_re_i         => z_re_s,
               z_im_i         => z_im_s,
               z_norm_limit_i => Z_NORM_LIMIT,
