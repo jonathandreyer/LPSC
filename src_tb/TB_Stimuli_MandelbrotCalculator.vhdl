@@ -103,12 +103,21 @@ begin
 
       --********** PROCEDURE "execute_mandebrot" **********
       PROCEDURE execute_mandebrot IS
+          VARIABLE finish_signal : std_logic := '0';
         BEGIN
           sim_cycle(1);
           start_o <= '1';
           sim_cycle(1);
           start_o <= '0';
-          sim_cycle(150);
+
+          WHILE finish_signal='0' loop
+            sim_cycle(1);
+            IF finish_i='1' THEN
+              finish_signal := '1';
+            END IF;
+          END LOOP;
+
+          sim_cycle(3);
       END execute_mandebrot;
 
       --********** PROCEDURE "check_result_mandelbrot_light" **********
@@ -176,6 +185,12 @@ begin
         assign_ref_mandelbrot_light(X"02");
         execute_mandebrot;
         check_result_mandelbrot_light(3);
+
+        --End simu
+        sim_cycle(20);
+
+        sim_end <= TRUE;
+        wait;
 
         --C_Re = -1.0, C_Im = 0.0 -> Iteration = 100
         assign_mandelbrot("11" & X"E000", "00" & X"0000");
