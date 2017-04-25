@@ -85,6 +85,14 @@ begin
           c_im_o    <= c_im;
       END assign_mandelbrot;
 
+      --********** PROCEDURE "assign_ref_mandelbrot_light" **********
+      PROCEDURE assign_ref_mandelbrot_light(iteration_ref: IN std_logic_vector(SIZE_ITER-1 DOWNTO 0)) IS
+        BEGIN
+          iter_ref <= iteration_ref;
+          z_re_1_ref <= (OTHERS => '0');
+          z_im_1_ref <= (OTHERS => '0');
+      END assign_ref_mandelbrot_light;
+
       --********** PROCEDURE "assign_ref_mandelbrot" **********
       PROCEDURE assign_ref_mandelbrot(iteration_ref: IN std_logic_vector(SIZE_ITER-1 DOWNTO 0); z_re_ref, z_im_ref: IN std_logic_vector(SIZE-1 DOWNTO 0)) IS
         BEGIN
@@ -150,16 +158,38 @@ begin
 
         --C_Re = 0.0, C_Im = 0.0 -> Iteration = 100
         assign_mandelbrot("00" & X"0000", "00" & X"0000");
-        assign_ref_mandelbrot(X"64", "00" & X"2000", "00" & X"0000");
+        --assign_ref_mandelbrot(X"64", "00" & X"2000", "00" & X"0000");
+        assign_ref_mandelbrot_light(X"64");
         execute_mandebrot;
         check_result_mandelbrot_light(1);
 
-        --C_Re = 2.0, C_Im = 2.0 -> Iteration = 2
-        assign_mandelbrot("00" & X"4000", "00" & X"4000");
-        assign_ref_mandelbrot(X"02", "00" & X"0000", "00" & X"2000");
+        --C_Re = 1.0, C_Im = 1.0 -> Iteration = 2
+        assign_mandelbrot("00" & X"2000", "00" & X"2000");
+        --assign_ref_mandelbrot(X"02", "00" & X"0000", "00" & X"2000");
+        assign_ref_mandelbrot_light(X"02");
         execute_mandebrot;
         check_result_mandelbrot_light(2);
 
+        --C_Re = 1.0, C_Im = 1.0 -> Iteration = 2 (2nd test with same values)
+        assign_mandelbrot("00" & X"2000", "00" & X"2000");
+        --assign_ref_mandelbrot(X"02", "00" & X"0000", "00" & X"2000");
+        assign_ref_mandelbrot_light(X"02");
+        execute_mandebrot;
+        check_result_mandelbrot_light(3);
+
+        --C_Re = -1.0, C_Im = 0.0 -> Iteration = 100
+        assign_mandelbrot("11" & X"E000", "00" & X"0000");
+        --assign_ref_mandelbrot(X"64", "00" & X"0000", "00" & X"2000");
+        assign_ref_mandelbrot_light(X"64");
+        execute_mandebrot;
+        check_result_mandelbrot_light(4);
+
+        --C_Re = -2.0, C_Im = -1.0 -> Iteration = 2
+        assign_mandelbrot("11" & X"C000", "11" & X"E000");
+        --assign_ref_mandelbrot(X"02", "00" & X"0000", "00" & X"2000");
+        assign_ref_mandelbrot_light(X"02");
+        execute_mandebrot;
+        check_result_mandelbrot_light(5);
 
         --End simu
         sim_cycle(20);
