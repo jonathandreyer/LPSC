@@ -80,18 +80,13 @@ begin
   end process;
 
   z_re_o <= z_re_1_i        when state = c_CALC else
-            (others => '0') when state = c_INIT else
-            (others => '0') when state = c_WAIT else
-            (others => '0') when state = c_LOAD else
             (others => '0');
 
   z_im_o <= z_im_1_i        when state = c_CALC else
-            (others => '0') when state = c_INIT else
-            (others => '0') when state = c_WAIT else
-            (others => '0') when state = c_LOAD else
             (others => '0');
 
   enable_complex_o <= '1' when state = c_CALC else
+                      '1' when state = c_LOAD else
                       '0';
 
   enable_counter_o <= '1' when state = c_CALC else
