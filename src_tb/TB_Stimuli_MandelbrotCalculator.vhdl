@@ -186,12 +186,6 @@ begin
         execute_mandebrot;
         check_result_mandelbrot_light(3);
 
-        --End simu
-        sim_cycle(20);
-
-        sim_end <= TRUE;
-        wait;
-
         --C_Re = -1.0, C_Im = 0.0 -> Iteration = 100
         assign_mandelbrot("11" & X"E000", "00" & X"0000");
         --assign_ref_mandelbrot(X"64", "00" & X"0000", "00" & X"2000");
