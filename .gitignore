@@ -1,0 +1,8 @@
+#Generated Cores
+src_coregen/*
+!src_coregen/*.xco
+
+#Ignore OS noise
+Thumbs.db
+.DS_Store
+.directory
