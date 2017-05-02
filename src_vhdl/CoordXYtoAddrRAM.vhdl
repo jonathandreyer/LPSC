@@ -15,6 +15,6 @@ architecture Behavioral_converter of CoordinateXYtoMemoryADDR is
 
 begin
 
-  addr_o <= y_i(9 downto 0) & x_i(10 downto 0);
+  addr_o <= "0000" & y_i(8 downto 0) & x_i(8 downto 0);
 
 end architecture Behavioral_converter;
