@@ -116,7 +116,7 @@ architecture Behavioral of top is
      port (
         x_i             : in  std_logic_vector(8 downto 0);
         y_i             : in  std_logic_vector(8 downto 0);
-        addr_o          : out std_logic_vector(18 downto 0)
+        addr_o          : out std_logic_vector(17 downto 0)
      );
    end component;
 	
@@ -150,6 +150,19 @@ architecture Behavioral of top is
 			  iteration_o : out std_logic_vector(SIZE_ITER-1 downto 0)
 			 );
 	end component;
+	
+	component Clock_Generator_Mandelbrot
+	port
+	 (-- Clock in ports
+	  CLK_IN1_P         : in     std_logic;
+	  CLK_IN1_N         : in     std_logic;
+	  -- Clock out ports
+	  CLK_OUT1          : out    std_logic;
+	  -- Status and control signals
+	  RESET             : in     std_logic;
+	  LOCKED            : out    std_logic
+	 );
+	end component;
 
 	-- DVI signals
 
@@ -169,7 +182,7 @@ architecture Behavioral of top is
 	
 	
 	-- Signals for the generation side
-	signal clk_110  : std_lock;
+	signal clk_110  : std_logic;
 	signal gen_x    : std_logic_vector(8 downto 0);
 	signal gen_y    : std_logic_vector(8 downto 0);
 	signal gen_data : std_logic_vector(6 downto 0);
@@ -178,6 +191,17 @@ architecture Behavioral of top is
 	signal gen_write_bus: std_logic_vector(0 downto 0);
 
 begin
+
+	gen_110_mhz : Clock_Generator_Mandelbrot
+	  port map
+		(-- Clock in ports
+		 CLK_IN1_P => SYSCLK_P,
+		 CLK_IN1_N => SYSCLK_N,
+		 -- Clock out ports
+		 CLK_OUT1 => clk_110,
+		 -- Status and control signals
+		 RESET  => RESET_I,
+		 LOCKED => open);
 
 	-- This device initialize the DVI screen using the I2C interface. Black box, supplied by the teacher.
 	Inst_FMCVIDEO_LPBK_CTRL: FMCVIDEO_LPBK_CTRL 
@@ -206,7 +230,7 @@ begin
 					 RCOL       => dvi_red,  
 					 GCOL       => dvi_green,  
 					 BCOL       => dvi_blue, 
-					 XPOS       => dvi_xpos
+					 XPOS       => dvi_xpos,
 					 YPOS       => dvi_ypos,
 					 -- dvi side signal
 					 DVI_XCLK_P => DVI_XCLK_P,
@@ -223,20 +247,20 @@ begin
 			  y_i             => dvi_ypos,
 			  iter_i          => dvi_data,
 			  x_o             => dvi_xpos_lim,
-			  y_o             => dvi_ypos_lim
-			  iter_o          => div_data_lim
+			  y_o             => dvi_ypos_lim,
+			  iter_o          => dvi_data_lim
 			 );
 
 	  XYtoRam_dvi_i: 	CoordinateXYtoMemoryADDR 
      port map (
         x_i             => dvi_xpos_lim,
-        y_i             => dvi_xyos_lim,
+        y_i             => dvi_ypos_lim,
         addr_o          => dvi_addr
      );
 
 	IP_MandelbrotGenerator_i: IP_MandelbrotGenerator 
 	  port map (
-			  clk_i   			=> clk110,    
+			  clk_i   			=> clk_110,    
 			  rst_i   			=> RESET_I,
 			  x_o     			=> gen_x,    
 			  y_o     			=> gen_y,    
@@ -254,7 +278,7 @@ begin
    
 	bram_i : bram
 	  port map (
-		 clka => clk110,
+		 clka => clk_110,
 		 ena => '1',
 		 wea => gen_write_bus,
 		 addra => gen_addr,
@@ -265,7 +289,10 @@ begin
 	  );
 
 	-- tricks the system
-	gen_write_bus <= (others => '1') when gen_write = '1' else  (others => '0')
+	gen_write_bus <= (others => '1') when gen_write = '1' else  (others => '0');
+
+	-- Reset the DVI
+	DVI_RESET_B <= RESET_I;
 
 
 end Behavioral;
