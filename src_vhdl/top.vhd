@@ -84,6 +84,7 @@ architecture Behavioral of top is
 			   SYSCLK_P  : in  std_logic; -- Differential clock @ 200 MHz
 				SYSCLK_N  : in  std_logic; -- Differential clock @ 200 MHz
 			   RST       : in  std_logic; -- Reset
+				 SYSCLK    : in  std_logic; -- Clock @ 200 MHz
 			   CLK125    : out std_logic; -- Clock @ 125 MHz
 			   CALIB_CLK : out std_logic  -- Clock @ 50 MHz
 			 );
@@ -153,8 +154,7 @@ architecture Behavioral of top is
 	component Clock_Generator_Mandelbrot
 	port
 	 (-- Clock in ports
-	  CLK_IN1_P         : in     std_logic;
-	  CLK_IN1_N         : in     std_logic;
+	  CLK_IN1           : in     std_logic;
 	  -- Clock out ports
 	  CLK_OUT1          : out    std_logic;
 	  -- Status and control signals
@@ -163,8 +163,9 @@ architecture Behavioral of top is
 	 );
 	end component;
 
-	-- DVI signals
+	signal sysclk_buf_s : std_logic;
 
+	-- DVI signals
 	signal clk50      : std_logic;                     -- Clock @ 50 MHz
 	signal clk125     : std_logic;                     -- Clock @ 125 MHz
 	signal dvi_red    : std_logic_vector(7 downto 0);  -- RED color channel
@@ -182,6 +183,8 @@ architecture Behavioral of top is
 
 	-- Signals for the generation side
 	signal clk_110  : std_logic;
+	signal gen_locked : std_logic;
+	signal gen_reset  : std_logic;
 	signal gen_x    : std_logic_vector(8 downto 0);
 	signal gen_y    : std_logic_vector(8 downto 0);
 	signal gen_data : std_logic_vector(6 downto 0);
@@ -194,13 +197,12 @@ begin
 	gen_110_mhz : Clock_Generator_Mandelbrot
 	  port map
 		(-- Clock in ports
-		 CLK_IN1_P => SYSCLK_P,
-		 CLK_IN1_N => SYSCLK_N,
+		 CLK_IN1 => sysclk_buf_s,
 		 -- Clock out ports
 		 CLK_OUT1 => clk_110,
 		 -- Status and control signals
 		 RESET  => RESET_I,
-		 LOCKED => open);
+		 LOCKED => gen_locked);
 
 	-- This device initialize the DVI screen using the I2C interface. Black box, supplied by the teacher.
 	Inst_FMCVIDEO_LPBK_CTRL: FMCVIDEO_LPBK_CTRL
@@ -216,6 +218,7 @@ begin
 		port map (
 			 SYSCLK_P  => SYSCLK_P,
 	         SYSCLK_N  => SYSCLK_N,
+				SYSCLK => sysclk_buf_s,
 			 CALIB_CLK => clk50,
 			 CLK125    => clk125,
 			 RST       => RESET_I
@@ -268,7 +271,7 @@ begin
 	IP_MandelbrotGenerator_i: IP_MandelbrotGenerator
 	  port map (
 			  clk_i   			=> clk_110,
-			  rst_i   			=> RESET_I,
+			  rst_i   			=> gen_reset,
 			  x_o     			=> gen_x,
 			  y_o     			=> gen_y,
 			  finish_o    		=> gen_write,
@@ -301,5 +304,7 @@ begin
 	-- Reset the DVI
 	DVI_RESET_B <= RESET_I;
 
+	-- Reset Mandelbrot IP
+	gen_reset <= not gen_locked;
 
 end Behavioral;
