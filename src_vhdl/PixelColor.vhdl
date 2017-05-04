@@ -22,7 +22,7 @@ architecture Behavioral_Color of PixelColor is
 
 begin
 
-  rgb_s <= iteration_i(SIZE-2 downto 1) & '0';
+  rgb_s <= iteration_i(SIZE-2 downto 0) & '0';
 
   r_o <= rgb_s;
   g_o <= rgb_s;

@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    18:13:58 05/02/2017 
--- Design Name: 
--- Module Name:    top - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
+-- Company:
+-- Engineer:
 --
--- Dependencies: 
+-- Create Date:    18:13:58 05/02/2017
+-- Design Name:
+-- Module Name:    top - Behavioral
+-- Project Name:
+-- Target Devices:
+-- Tool versions:
+-- Description:
 --
--- Revision: 
+-- Dependencies:
+--
+-- Revision:
 -- Revision 0.01 - File Created
--- Additional Comments: 
+-- Additional Comments:
 --
 ----------------------------------------------------------------------------------
 library IEEE;
@@ -48,7 +48,6 @@ end top;
 
 architecture Behavioral of top is
 
-	
 	component bram
 	  port (
 		 clka : IN STD_LOGIC;
@@ -61,7 +60,7 @@ architecture Behavioral of top is
 		 doutb : OUT STD_LOGIC_VECTOR(6 DOWNTO 0)
 	  );
 	end component;
-	
+
 	component dvi_ctrl
 	  port (
 			CLK        : in  std_logic;                     -- Clock @ 125 MHz
@@ -78,29 +77,29 @@ architecture Behavioral of top is
 			DVI_D      : out std_logic_vector(11 downto 0)  -- DVI data
 	   );
 	end component;
-	
+
 	-- Generates clocks for the entire design
 	component SP605_BRD_CLOCKS
 		port (
 			   SYSCLK_P  : in  std_logic; -- Differential clock @ 200 MHz
 				SYSCLK_N  : in  std_logic; -- Differential clock @ 200 MHz
-			   RST       : in  std_logic; -- Reset         
+			   RST       : in  std_logic; -- Reset
 			   CLK125    : out std_logic; -- Clock @ 125 MHz
 			   CALIB_CLK : out std_logic  -- Clock @ 50 MHz
 			 );
 	end component;
-	
+
 	-- Control the communication with the DVI screen (I2C)
 	component FMCVIDEO_LPBK_CTRL
 		port (
 			   CLK : in    std_logic; -- Clock @ 50 MHz
-			   RST : in    std_logic; -- Reset   
-			   SDA : inout std_logic; -- I2C     
+			   RST : in    std_logic; -- Reset
+			   SDA : inout std_logic; -- I2C
 			   SCL : out   std_logic  -- I2C
  			 );
 	end component;
-	
-	component PixelColor 
+
+	component PixelColor
 	  generic (
            SIZE : integer := 8
 	  );
@@ -111,15 +110,15 @@ architecture Behavioral of top is
 		  b_o             : out std_logic_vector(SIZE-1 downto 0)
 	   );
 	end component;
-	
-	component CoordinateXYtoMemoryADDR 
+
+	component CoordinateXYtoMemoryADDR
      port (
         x_i             : in  std_logic_vector(8 downto 0);
         y_i             : in  std_logic_vector(8 downto 0);
         addr_o          : out std_logic_vector(17 downto 0)
      );
    end component;
-	
+
 	component LimiterXYtoBRAM is
 	  port (
 			  x_i             : in  std_logic_vector(10 downto 0);
@@ -130,7 +129,7 @@ architecture Behavioral of top is
 			  iter_o          : out std_logic_vector(7 downto 0)
 			 );
 	end component;
-	
+
 	component IP_MandelbrotGenerator is
 	  generic (
            SIZE_COMPLEX   : integer := 18;
@@ -150,7 +149,7 @@ architecture Behavioral of top is
 			  iteration_o : out std_logic_vector(SIZE_ITER-1 downto 0)
 			 );
 	end component;
-	
+
 	component Clock_Generator_Mandelbrot
 	port
 	 (-- Clock in ports
@@ -179,8 +178,8 @@ architecture Behavioral of top is
 	signal dvi_addr     : std_logic_vector(17 downto 0);
 	signal dvi_data     : std_logic_vector(6 downto 0);
 	signal dvi_data_lim : std_logic_vector(7 downto 0);
-	
-	
+
+
 	-- Signals for the generation side
 	signal clk_110  : std_logic;
 	signal gen_x    : std_logic_vector(8 downto 0);
@@ -204,16 +203,16 @@ begin
 		 LOCKED => open);
 
 	-- This device initialize the DVI screen using the I2C interface. Black box, supplied by the teacher.
-	Inst_FMCVIDEO_LPBK_CTRL: FMCVIDEO_LPBK_CTRL 
+	Inst_FMCVIDEO_LPBK_CTRL: FMCVIDEO_LPBK_CTRL
 	port map (
 		 CLK => clk50,
 		 RST => RESET_I,
 		 SCL => SCL_DVI,
 		 SDA => SDA_DVI
 	  );
-	
+
 	-- This component generate the 125Mhz and 50Mhz clock out of the 200MHz system clock.
-	Inst_SP605_BRD_CLOCKS: SP605_BRD_CLOCKS 
+	Inst_SP605_BRD_CLOCKS: SP605_BRD_CLOCKS
 		port map (
 			 SYSCLK_P  => SYSCLK_P,
 	         SYSCLK_N  => SYSCLK_N,
@@ -221,15 +220,15 @@ begin
 			 CLK125    => clk125,
 			 RST       => RESET_I
 		  );
-				  
+
 	  -- This copoment drive the DVI signals using the RGB data.
 	  Inst_dvictrl: dvi_ctrl
 		port map (
-					 -- Top level 
+					 -- Top level
 					 CLK        => clk125,
-					 RCOL       => dvi_red,  
-					 GCOL       => dvi_green,  
-					 BCOL       => dvi_blue, 
+					 RCOL       => dvi_red,
+					 GCOL       => dvi_green,
+					 BCOL       => dvi_blue,
 					 XPOS       => dvi_xpos,
 					 YPOS       => dvi_ypos,
 					 -- dvi side signal
@@ -241,7 +240,7 @@ begin
 					 DVI_D      => DVI_D
 				  );
 
-      limiter_i: LimiterXYtoBRAM 
+      limiter_i: LimiterXYtoBRAM
 	  port map (
 			  x_i             => dvi_xpos,
 			  y_i             => dvi_ypos,
@@ -251,31 +250,39 @@ begin
 			  iter_o          => dvi_data_lim
 			 );
 
-	  XYtoRam_dvi_i: 	CoordinateXYtoMemoryADDR 
+		PixelColor_i : PixelColor
+			port map (
+			  iteration_i => dvi_data_lim,
+			  r_o         => dvi_red,
+			  g_o         => dvi_green,
+			  b_o         => dvi_blue
+			);
+
+	  XYtoRam_dvi_i: 	CoordinateXYtoMemoryADDR
      port map (
         x_i             => dvi_xpos_lim,
         y_i             => dvi_ypos_lim,
         addr_o          => dvi_addr
      );
 
-	IP_MandelbrotGenerator_i: IP_MandelbrotGenerator 
+	IP_MandelbrotGenerator_i: IP_MandelbrotGenerator
 	  port map (
-			  clk_i   			=> clk_110,    
+			  clk_i   			=> clk_110,
 			  rst_i   			=> RESET_I,
-			  x_o     			=> gen_x,    
-			  y_o     			=> gen_y,    
+			  x_o     			=> gen_x,
+			  y_o     			=> gen_y,
 			  finish_o    		=> gen_write,
 			  iteration_o       => gen_data
 	  );
 
-	XYtoRam_gen_i: 	CoordinateXYtoMemoryADDR 
+	XYtoRam_gen_i: 	CoordinateXYtoMemoryADDR
      port map (
         x_i             => gen_x,
         y_i             => gen_y,
         addr_o          => gen_addr
      );
 
-   
+
 	bram_i : bram
 	  port map (
 		 clka => clk_110,
@@ -296,4 +303,3 @@ begin
 
 
 end Behavioral;
-
