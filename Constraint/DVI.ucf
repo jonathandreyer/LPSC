@@ -1,0 +1,48 @@
+###################################################################################
+## Company:        Xilinx & HES//SO hepia
+## Engineer:       Xavier Paillard
+## 
+## Create Date:    08:49:58 01/29/2013 
+## Design Name:    DVI
+## Module Name:    DVI - constraint 
+## Project Name:   DVI
+## Target Devices: Xilinx SP605 - XC6SLX45T-3fpgg484
+## Tool versions:  Xilinx ISE 14.3 - Windows 7 64bits
+## Description:    Constraint file
+## Dependencies:   no
+## Revision:       Revision 0.01 - File created by Xilinx
+##                 Revision 0.02 - File modified by Xavier Paillard
+###################################################################################
+
+# CLOCK AT 200 MHZ
+NET "SYSCLK_P" TNM_NET = "SYSCLK_P";
+TIMESPEC "TS_SYSCLK_P" = PERIOD "SYSCLK_P"  5  ns HIGH 50 %;
+
+# RESET
+NET RESET_I LOC = H8;
+
+# USER CLOCK @200 MHz
+NET SYSCLK_N LOC = K22 | IOSTANDARD = LVDS_25; 
+NET SYSCLK_P LOC = K21 | IOSTANDARD = LVDS_25; 
+
+# DVI 
+NET "SCL_DVI"     LOC = "W13" |SLEW = SLOW  | IOSTANDARD = LVCMOS25;
+NET "SDA_DVI"     LOC = "AA4"               | IOSTANDARD = LVCMOS25;
+NET "DVI_D<0>"    LOC = "K16" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<1>"    LOC = "U19" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<2>"    LOC = "T20" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<3>"    LOC = "N16" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<4>"    LOC = "P16" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<5>"    LOC = "M17" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<6>"    LOC = "M18" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<7>"    LOC = "R15" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<8>"    LOC = "R16" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<9>"    LOC = "P17" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<10>"   LOC = "P18" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_D<11>"   LOC = "R17" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_DE"      LOC = "J17" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_H"       LOC = "J16" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_RESET_B" LOC = "L15" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_V"       LOC = "B22" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_XCLK_N"  LOC = "C22" | SLEW = FAST | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+NET "DVI_XCLK_P"  LOC = "C20" | SLEW = FAST | IOSTANDARD = LVCMOS25 | DRIVE = 12;
