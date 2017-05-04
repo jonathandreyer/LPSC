@@ -43,8 +43,8 @@ architecture Behavioral of ComplexValueGenerator is
 
   -- constantes
 
-  signal c_bot_left_RE : integer := -2;
-  signal c_bot_left_IM : integer := -1;
+  signal c_bot_left_RE : integer := 0;
+  signal c_bot_left_IM : integer := 0;
   signal comma_padding : std_logic_vector (comma-1 downto 0) := (others=>'0');
   signal c_inc         : std_logic_vector (SIZE-1 downto 0);
 

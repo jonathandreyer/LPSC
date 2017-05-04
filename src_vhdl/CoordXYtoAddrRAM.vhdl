@@ -6,7 +6,7 @@ entity CoordinateXYtoMemoryADDR is
   port (
         x_i             : in  std_logic_vector(8 downto 0);
         y_i             : in  std_logic_vector(8 downto 0);
-        addr_o          : out std_logic_vector(18 downto 0)
+        addr_o          : out std_logic_vector(17 downto 0)
        );
 
 end entity CoordinateXYtoMemoryADDR;
