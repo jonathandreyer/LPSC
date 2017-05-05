@@ -18,6 +18,7 @@
 --
 ----------------------------------------------------------------------------------
 library IEEE;
+use ieee.std_logic_arith.all;
 use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
@@ -42,7 +43,9 @@ entity top is
 			DVI_D       : out   std_logic_vector(11 downto 0); -- DVI data
 			DVI_RESET_B : out   std_logic;                     -- DVI reset
 			SDA_DVI     : inout std_logic;                     -- DVI I2C
-			SCL_DVI     : out   std_logic                      -- DVI I2C
+			SCL_DVI     : out   std_logic;                     -- DVI I2C
+			RESET_IP_o	: out   std_logic;
+			BLINK_o			: out   std_logic
 		 );
 end top;
 
@@ -117,10 +120,10 @@ architecture Behavioral of top is
         x_i             : in  std_logic_vector(8 downto 0);
         y_i             : in  std_logic_vector(8 downto 0);
         addr_o          : out std_logic_vector(17 downto 0)
-     );
-   end component;
+     	);
+	 end component;
 
-	component LimiterXYtoBRAM is
+	component LimiterXYtoBRAM
 	  port (
 			  x_i             : in  std_logic_vector(10 downto 0);
 			  y_i             : in  std_logic_vector(10 downto 0);
@@ -131,7 +134,7 @@ architecture Behavioral of top is
 			 );
 	end component;
 
-	component IP_MandelbrotGenerator is
+	component IP_MandelbrotGenerator
 	  generic (
            SIZE_COMPLEX   : integer := 18;
            FRACTIONAL     : integer := 13;
@@ -152,15 +155,15 @@ architecture Behavioral of top is
 	end component;
 
 	component Clock_Generator_Mandelbrot
-	port
-	 (-- Clock in ports
-	  CLK_IN1           : in     std_logic;
-	  -- Clock out ports
-	  CLK_OUT1          : out    std_logic;
-	  -- Status and control signals
-	  RESET             : in     std_logic;
-	  LOCKED            : out    std_logic
-	 );
+		port
+		 (-- Clock in ports
+		  CLK_IN1           : in     std_logic;
+		  -- Clock out ports
+		  CLK_OUT1          : out    std_logic;
+		  -- Status and control signals
+		  RESET             : in     std_logic;
+		  LOCKED            : out    std_logic
+		 );
 	end component;
 
 	signal sysclk_buf_s : std_logic;
@@ -192,6 +195,9 @@ architecture Behavioral of top is
 	signal gen_write: std_logic;
 	signal gen_write_bus: std_logic_vector(0 downto 0);
 
+	SIGNAL counter_s : std_logic_vector(31 DOWNTO 0);
+	SIGNAL bascule_s : std_logic;
+
 begin
 
 	gen_110_mhz : Clock_Generator_Mandelbrot
@@ -206,12 +212,12 @@ begin
 
 	-- This device initialize the DVI screen using the I2C interface. Black box, supplied by the teacher.
 	Inst_FMCVIDEO_LPBK_CTRL: FMCVIDEO_LPBK_CTRL
-	port map (
-		 CLK => clk50,
-		 RST => RESET_I,
-		 SCL => SCL_DVI,
-		 SDA => SDA_DVI
-	  );
+		port map (
+			 CLK => clk50,
+			 RST => RESET_I,
+			 SCL => SCL_DVI,
+			 SDA => SDA_DVI
+		  );
 
 	-- This component generate the 125Mhz and 50Mhz clock out of the 200MHz system clock.
 	Inst_SP605_BRD_CLOCKS: SP605_BRD_CLOCKS
@@ -285,7 +291,6 @@ begin
         addr_o          => gen_addr
      );
 
-
 	bram_i : bram
 	  port map (
 		 clka => clk_110,
@@ -298,6 +303,25 @@ begin
 		 doutb => dvi_data
 	  );
 
+	PROCESS (clk_110, RESET_I)
+		BEGIN
+			IF RESET_I = '0' THEN --remise a zero asynchrone
+				counter_s <= (OTHERS => '0');
+				bascule_s <= '0';
+			ELSIF rising_edge(clk_110) THEN
+				IF counter_s = X"014FB180" then
+					counter_s <= (OTHERS => '0');
+					IF bascule_s = '0' THEN
+						bascule_s <= '1';
+					ELSE
+						bascule_s <= '0';
+					END IF;
+				ELSE
+					counter_s <= UNSIGNED(counter_s) + 1;
+				END IF;
+			END IF;
+		END PROCESS;
+
 	-- tricks the system
 	gen_write_bus <= (others => '1') when gen_write = '1' else  (others => '0');
 
@@ -306,5 +330,7 @@ begin
 
 	-- Reset Mandelbrot IP
 	gen_reset <= not gen_locked;
+	RESET_IP_o <= gen_reset;
+	BLINK_o <= bascule_s;
 
 end Behavioral;
