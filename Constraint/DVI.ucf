@@ -1,10 +1,10 @@
 ###################################################################################
 ## Company:        Xilinx & HES//SO hepia
 ## Engineer:       Xavier Paillard
-## 
-## Create Date:    08:49:58 01/29/2013 
+##
+## Create Date:    08:49:58 01/29/2013
 ## Design Name:    DVI
-## Module Name:    DVI - constraint 
+## Module Name:    DVI - constraint
 ## Project Name:   DVI
 ## Target Devices: Xilinx SP605 - XC6SLX45T-3fpgg484
 ## Tool versions:  Xilinx ISE 14.3 - Windows 7 64bits
@@ -22,10 +22,10 @@ TIMESPEC "TS_SYSCLK_P" = PERIOD "SYSCLK_P"  5  ns HIGH 50 %;
 NET RESET_I LOC = H8;
 
 # USER CLOCK @200 MHz
-NET SYSCLK_N LOC = K22 | IOSTANDARD = LVDS_25; 
-NET SYSCLK_P LOC = K21 | IOSTANDARD = LVDS_25; 
+NET SYSCLK_N LOC = K22 | IOSTANDARD = LVDS_25;
+NET SYSCLK_P LOC = K21 | IOSTANDARD = LVDS_25;
 
-# DVI 
+# DVI
 NET "SCL_DVI"     LOC = "W13" |SLEW = SLOW  | IOSTANDARD = LVCMOS25;
 NET "SDA_DVI"     LOC = "AA4"               | IOSTANDARD = LVCMOS25;
 NET "DVI_D<0>"    LOC = "K16" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
@@ -46,3 +46,7 @@ NET "DVI_RESET_B" LOC = "L15" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12
 NET "DVI_V"       LOC = "B22" | SLEW = SLOW | IOSTANDARD = LVCMOS25 | DRIVE = 12;
 NET "DVI_XCLK_N"  LOC = "C22" | SLEW = FAST | IOSTANDARD = LVCMOS25 | DRIVE = 12;
 NET "DVI_XCLK_P"  LOC = "C20" | SLEW = FAST | IOSTANDARD = LVCMOS25 | DRIVE = 12;
+
+# LEDs
+NET "RESET_IP_o"  LOC = "D17";   ## 2   on DS3 LED
+NET "BLINK_o"     LOC = "AB4";   ## 2   on DS4 LED
