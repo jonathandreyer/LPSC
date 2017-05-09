@@ -45,7 +45,7 @@ entity top is
 			SDA_DVI     : inout std_logic;                     -- DVI I2C
 			SCL_DVI     : out   std_logic;                     -- DVI I2C
 			RESET_IP_o	: out   std_logic;
-			BLINK_o			: out   std_logic
+			BLINK_o		: out   std_logic
 		 );
 end top;
 
@@ -87,7 +87,7 @@ architecture Behavioral of top is
 			   SYSCLK_P  : in  std_logic; -- Differential clock @ 200 MHz
 				SYSCLK_N  : in  std_logic; -- Differential clock @ 200 MHz
 			   RST       : in  std_logic; -- Reset
-				 SYSCLK    : in  std_logic; -- Clock @ 200 MHz
+				SYSCLK    : out std_logic; -- Clock @ 200 MHz
 			   CLK125    : out std_logic; -- Clock @ 125 MHz
 			   CALIB_CLK : out std_logic  -- Clock @ 50 MHz
 			 );
@@ -182,7 +182,6 @@ architecture Behavioral of top is
 	signal dvi_addr     : std_logic_vector(17 downto 0);
 	signal dvi_data     : std_logic_vector(6 downto 0);
 	signal dvi_data_lim : std_logic_vector(7 downto 0);
-
 
 	-- Signals for the generation side
 	signal clk_110  : std_logic;
@@ -303,9 +302,9 @@ begin
 		 doutb => dvi_data
 	  );
 
-	PROCESS (clk_110, RESET_I)
+	PROCESS (clk_110, gen_reset)
 		BEGIN
-			IF RESET_I = '0' THEN --remise a zero asynchrone
+			IF gen_reset = '1' THEN
 				counter_s <= (OTHERS => '0');
 				bascule_s <= '0';
 			ELSIF rising_edge(clk_110) THEN

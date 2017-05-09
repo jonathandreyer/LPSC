@@ -21,7 +21,7 @@ begin
   x_o <= x_i(8 downto 0);
   y_o <= y_i(8 downto 0);
 
-  iter_o <= '0' & iter_i when y_i > "0011111111" and y_i > "0011111111" else
+  iter_o <= '0' & iter_i when x_i < "0011111111" and y_i < "0011111111" else
             (others => '0');
 
 end architecture Behavioral_limiter;

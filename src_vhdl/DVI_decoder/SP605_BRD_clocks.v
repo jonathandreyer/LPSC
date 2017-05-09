@@ -24,6 +24,7 @@ module SP605_BRD_CLOCKS
 	 output wire CALIB_CLK          // 50 MHz
   );
 
+	wire osc_clk_ibufg;        // No differential clock after IBUFG
 	wire calib_clk_bufg_in;    // RAW PLL outputs
 	wire clkfbout_clkfbin;     // Clock from PLLFBOUT to PLLFBIN
 	wire clkfbout_clkfbin_125; // Clock from PLLFBOUT to PLLFBIN
@@ -41,6 +42,12 @@ module SP605_BRD_CLOCKS
 		 .O(CLK125)
 	  );
 
+	BUFG bufg200 // Clock buffer
+		(
+		 .I(osc_clk_ibufg),
+		 .O(SYSCLK)
+	  );
+
 	IBUFGDS // Differential clock buffer
 		#(
 		  .DIFF_TERM("FALSE"),    // Differential Termination (Virtex-4/5, Spartan-3E/3A)
@@ -49,7 +56,7 @@ module SP605_BRD_CLOCKS
 	     .IOSTANDARD("LVDS_25")  // Specify the input I/O standard
 		) inibufg
 	   (
-	    .O(SYSCLK), // Clock buffer output
+	    .O(osc_clk_ibufg), // Clock buffer output
 	    .I(SYSCLK_P),      // Diff_p clock buffer input
 	    .IB(SYSCLK_N)      // Diff_n clock buffer input
 	  );
@@ -86,7 +93,7 @@ module SP605_BRD_CLOCKS
 		 (
 		  .CLKFBIN    (clkfbout_clkfbin_125),
 		  .CLKINSEL   (1'b1),
-		  .CLKIN1     (SYSCLK),
+		  .CLKIN1     (osc_clk_ibufg),
 		  .CLKIN2     (1'b0),
 		  .DADDR      (5'b0),
 		  .DCLK       (1'b0),
