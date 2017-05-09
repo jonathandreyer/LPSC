@@ -48,6 +48,9 @@ ise_project/par_usage_statistics.html
 ise_project/usage_statistics_webtalk.html
 ise_project/webtalk.log
 ise_project/webtalk_pn.xml
+ise_project/planAhead*
+ise_project/pa*.tcl
+ise_project/*.xdl
 
 # Generated Cores
 src_coregen/*
