@@ -325,7 +325,7 @@ begin
 	gen_write_bus <= (others => '1') when gen_write = '1' else  (others => '0');
 
 	-- Reset the DVI
-	DVI_RESET_B <= RESET_I;
+	DVI_RESET_B <= '1';
 
 	-- Reset Mandelbrot IP
 	gen_reset <= not gen_locked;
