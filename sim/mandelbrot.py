@@ -25,16 +25,21 @@ def color(mag):
     green = int(min((max((4*math.fabs(x-0.5)-1., 0.)), 1.))*255)
     return (red, green, blue)
 
-def color2(mag):
+def bw(mag):
     v = int(mag/MAX*255)
     return (v, v, v)
 
 def main_gui():
 
-    c_start, c_end = -2 +1j, 1 - 1j
-    WIDTH, HEIGHT = 1280, 1024
-    #WIDTH, HEIGHT = 320, 240
-    SF = 1
+    c_start, c_end = -1.5 +1j, 1 - 1j
+    #WIDTH, HEIGHT = 1280, 1024
+    WIDTH, HEIGHT = 320, 240
+    WIDTH, HEIGHT = 640, 480
+    SF = 2
+
+    mouse_state = [0, 0]
+
+    rect = [[0,0], [0,0]]
 
     def pix2c(x, y):
         cx = x * (c_end.real - c_start.real) / WIDTH
@@ -60,6 +65,24 @@ def main_gui():
                     sys.exit()
 
             pygame.display.update()
+
+            mouse_state[0] = pygame.mouse.get_pressed()[0]
+            if mouse_state[0] != mouse_state[1] and mouse_state[0]:
+                print('presset at ', pygame.mouse.get_pos())
+                rect[0] = pygame.mouse.get_pos()
+
+            if mouse_state[0]:
+                rect[1] = pygame.mouse.get_pos()
+                pygame.draw.rect(screen, (255, 0, 0), (rect[0][0], rect[0][1], rect[1][0]-rect[0][0], rect[1][1]-rect[0][1]), 1)
+
+            if mouse_state[0] != mouse_state[1] and not mouse_state[0]:
+                print('release at ', pygame.mouse.get_pos())
+                c_start = pix2c(rect[0][0]/SF, rect[0][1]/SF)
+                c_end = pix2c(rect[1][0]/SF, rect[1][1]/SF)
+                mouse_state[1] = mouse_state[0]
+                break
+
+            mouse_state[1] = mouse_state[0]
 
         # check for quit events
 
