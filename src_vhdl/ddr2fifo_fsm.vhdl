@@ -44,7 +44,7 @@ entity ddr2fifo_fsm is
     ddr_data_i        : in  STD_LOGIC_VECTOR(31 downto 0);
     ddr_calib_done_i  : in  STD_LOGIC;
     fifo_wr_en_o      : out  STD_LOGIC;
-    fifo_data_o       : out  STD_LOGIC_VECTOR (6 downto 0);
+    fifo_data_o       : out  STD_LOGIC_VECTOR (7 downto 0);
     fifo_full_i       : in  STD_LOGIC;
     fifo_ack_i        : in  STD_LOGIC);
 end ddr2fifo_fsm;
@@ -130,7 +130,7 @@ begin
 
 
   -- Manage FIFO data & contoll
-  fifo_data_o <= data(6 downto 0);
+  fifo_data_o <= data(7 downto 0);
   fifo_wr_en_o <= '1' when state = c_WRITE_FIFO else '0';
 
 

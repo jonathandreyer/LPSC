@@ -31,10 +31,10 @@ use IEEE.STD_LOGIC_1164.ALL;
  
 entity dvi_start_fsm is
   Port ( 
-    reset_i : in  STD_LOGIC;
-    cli_i : in  STD_LOGIC;
-    xpos_i : in  STD_LOGIC_VECTOR (10 downto 0);
-    ypos_i : in  STD_LOGIC_VECTOR (10 downto 0);
+    reset_i  : in   STD_LOGIC;
+    clk_i    : in   STD_LOGIC;
+    xpos_i   : in   STD_LOGIC_VECTOR (10 downto 0);
+    ypos_i   : in   STD_LOGIC_VECTOR (10 downto 0);
     enable_o : out  STD_LOGIC
  );
 end dvi_start_fsm;
@@ -49,9 +49,9 @@ architecture Behavioral of dvi_start_fsm is
 
 begin
 
-  process(clk_i, rst_i)
+  process(clk_i, reset_i)
   begin
-    if rst_i = '1' then
+    if reset_i = '1' then
       state <= c_WAIT;
     elsif rising_edge(clk_i) then 
       case state is
@@ -62,6 +62,8 @@ begin
           end if;
         when c_RUN => 
           -- Nothing to do anymore
+			 
+		  when others => state <= c_WAIT;
 
       end case;
     end if;

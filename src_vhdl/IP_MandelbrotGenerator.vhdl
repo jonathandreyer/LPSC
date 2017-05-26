@@ -8,8 +8,8 @@ entity IP_MandelbrotGenerator is
            FRACTIONAL     : integer := 13;
            SIZE_ITER      : integer := 8;
            MAX_ITERATION  : integer := 100;
-           X_SCREEN_SIZE  : integer := 512;
-           Y_SCREEN_SIZE  : integer := 512;
+           X_SCREEN_SIZE  : integer := 1024;
+           Y_SCREEN_SIZE  : integer := 1024;
            SIZE_SCREEN    : integer := 11
           );
 
@@ -129,7 +129,7 @@ begin
       z_re_o      => z_re_1_s,
       z_im_o      => z_im_1_s,
       iteration_o => iteration_o,
-      finish_o    => finished_o
+      finish_o    => finish_o
     );
 
 
