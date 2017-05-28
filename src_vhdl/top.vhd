@@ -63,8 +63,9 @@ entity top is
       MEM1_UDM     : out std_logic;
       MEM1_UDQS_N  : inout std_logic;
       MEM1_UDQS_P  : inout std_logic;
-      MEM1_WE_B    : out std_logic
-
+      MEM1_WE_B    : out std_logic;
+      RZQ          : inout std_logic;
+      ZIO          : inout std_logic
      );
 end top;
 
@@ -156,8 +157,8 @@ architecture Behavioral of top is
       CLK_IN1           : in     std_logic;
       -- Clock out ports
       CLK_OUT1          : out    std_logic;
-		  CLK_OUT2          : out    std_logic;
-		  CLK_OUT3          : out    std_logic;
+      CLK_OUT2          : out    std_logic;
+      CLK_OUT3          : out    std_logic;
       -- Status and control signals
       RESET             : in     std_logic;
       LOCKED            : out    std_logic
@@ -172,7 +173,7 @@ architecture Behavioral of top is
      C3_P1_DATA_PORT_SIZE      : integer := 32;
      C3_MEMCLK_PERIOD          : integer := 3000;
      C3_RST_ACT_LOW            : integer := 0;
-     C3_INPUT_CLK_TYPE         : string := "SINGLE_ENDED";
+     C3_INPUT_CLK_TYPE         : string := "DIFFERENTIAL";
      C3_CALIB_SOFT_IP          : string := "TRUE";
      C3_SIMULATION             : string := "FALSE";
      DEBUG_EN                  : integer := 1;
@@ -197,7 +198,8 @@ architecture Behavioral of top is
     mcb3_rzq                                : inout  std_logic;
     mcb3_zio                                : inout  std_logic;
     mcb3_dram_udm                           : out std_logic;
-    c3_sys_clk                              : in  std_logic;
+    c3_sys_clk_p                            : in  std_logic;
+    c3_sys_clk_n                            : in  std_logic;
     c3_sys_rst_i                            : in  std_logic;
     c3_calib_done                           : out std_logic;
     c3_clk0                                 : out std_logic;
@@ -373,10 +375,10 @@ begin
      -- Status and control signals
      RESET  => RESET_I,
      LOCKED => gen_locked);
-	  
-	  
+    
+    
    gen_data_32 <= X"000000" & '0' & gen_data;
-	gen_addr_30 <= "00000000" & gen_addr;
+  gen_addr_30 <= "00000000" & gen_addr;
 
   u_ddr_control : ddr_control
   generic map (
@@ -386,7 +388,7 @@ begin
     C3_P1_DATA_PORT_SIZE      =>  32,
     C3_MEMCLK_PERIOD          =>  3000,
     C3_RST_ACT_LOW            =>  0,
-    C3_INPUT_CLK_TYPE         => "SINGLE_ENDED",
+    C3_INPUT_CLK_TYPE         => "DIFFERENTIAL",
     C3_CALIB_SOFT_IP          => "TRUE",
     C3_SIMULATION             => "FALSE",
     DEBUG_EN                  =>  1,
@@ -397,7 +399,8 @@ begin
   )
   port map (
 
-    c3_sys_clk          =>  clk_330,
+    c3_sys_clk_p          =>  SYSCLK_P,
+    c3_sys_clk_n        => SYSCLK_N,
     c3_sys_rst_i        =>  RESET_I,                        
 
     -- DDR side signals
@@ -418,8 +421,8 @@ begin
     mcb3_dram_udqs_n    =>  MEM1_UDQS_N,    -- for X16 parts
     mcb3_dram_udm       =>  MEM1_UDM,     -- for X16 parts
     mcb3_dram_dm        =>  MEM1_LDM,
-    --mcb3_rzq            =>  rzq3,      
-    --mcb3_zio            =>  zio3,
+    mcb3_rzq            =>  RZQ,      
+    mcb3_zio            =>  ZIO,
 
     c3_clk0             =>  open,
     c3_rst0             =>  open,
