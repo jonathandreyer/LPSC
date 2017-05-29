@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use ieee.std_logic_arith.all;
-use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_1164.ALL; 
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -27,8 +27,8 @@ use IEEE.NUMERIC_STD.to_unsigned;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+library UNISIM;
+use UNISIM.VComponents.all;
 
 entity top is
   port (
@@ -98,6 +98,19 @@ architecture Behavioral of top is
       CLK125    : out std_logic; -- Clock @ 125 MHz
       CALIB_CLK : out std_logic  -- Clock @ 50 MHz
     );
+  end component;
+
+  component gen_125Mhz_50Mhz
+  port
+   (-- Clock in ports
+    CLK_IN1           : in     std_logic;
+    -- Clock out ports
+    CLK_OUT1          : out    std_logic;
+    CLK_OUT2          : out    std_logic;
+    -- Status and control signals
+    RESET             : in     std_logic;
+    LOCKED            : out    std_logic
+   );
   end component;
 
   -- Control the communication with the DVI screen (I2C)
@@ -303,7 +316,7 @@ component MbGen2DDR_FSM
   );
 end component;
 
-
+  signal sysclk_s    :std_logic;
   signal sysclk_buf_s : std_logic;
 
   -- DVI signals
@@ -424,7 +437,7 @@ begin
     mcb3_rzq            =>  RZQ,      
     mcb3_zio            =>  ZIO,
 
-    c3_clk0             =>  open,
+    c3_clk0             =>  sysclk_buf_s,
     c3_rst0             =>  open,
     
    
@@ -472,6 +485,7 @@ begin
   MEM1_A(13) <= '0';
   MEM1_A(14) <= '0';
 
+
   -- This device initialize the DVI screen using the I2C interface. Black box, supplied by the teacher.
   Inst_FMCVIDEO_LPBK_CTRL: FMCVIDEO_LPBK_CTRL
   port map (
@@ -482,14 +496,16 @@ begin
   );
 
   -- This component generate the 125Mhz and 50Mhz clock out of the 200MHz system clock.
-  Inst_SP605_BRD_CLOCKS: SP605_BRD_CLOCKS
-  port map (
-    SYSCLK_P  => SYSCLK_P,
-    SYSCLK_N  => SYSCLK_N,
-    SYSCLK => sysclk_buf_s,
-    CALIB_CLK => clk50,
-    CLK125    => clk125,
-    RST       => RESET_I
+  gen_125Mhz_50Mhz_i : gen_125Mhz_50Mhz
+  port map
+   (-- Clock in portsk
+    CLK_IN1 => sysclk_buf_s,
+    -- Clock out ports
+    CLK_OUT1 => clk125,
+    CLK_OUT2 => clk50,
+    -- Status and control signals
+    RESET  => RESET_I,
+    LOCKED => open
   );
 
     -- This copoment drive the DVI signals using the RGB data.
