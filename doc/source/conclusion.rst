@@ -11,9 +11,9 @@ Problème rencontré & solutions proposées
 Possibilité d'améliorations
 ---------------------------
 
-Deux pistes d’améliorations sont entrevue:
+Deux pistes d’améliorations sont entrevues:
 
- - Calculateur avec pipe-line, discuté avant
+ - Calculateur avec pipeline, comme discuté auparavant
  - Utilisation de la DDR externe à la FPGA pour augmenter la taille de la fractale.
 
 

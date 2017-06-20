@@ -1,7 +1,7 @@
 Introduction
 ============
 
-Ce projet a pour finalité de calculer un fractale de Mandelbrot. Le but tout au long de ce projet et d'étudier les optimisations qui peuvent être faite afin d'accélérer la logique généré par le VHDL.
+Ce projet a pour finalité de calculer une fractale de Mandelbrot. Le but tout au long de ce projet est d'étudier les optimisations qui peuvent être faites afin d'accélérer la logique générée par le VHDL.
 
 Le projet cible la carte SP605 de Xilinx (:numref:`fig_sp605`). 
 
@@ -11,7 +11,7 @@ Le projet cible la carte SP605 de Xilinx (:numref:`fig_sp605`).
 	
 	Carte SP605 de Xilinx
 
-Cette carte embarque une FPGA Spartan 6 (XC6SLX45T) ainsi que plusieurs périphériques tel que :
+Cette carte embarque une FPGA Spartan 6 (XC6SLX45T) ainsi que plusieurs périphériques tels que :
 
  - Sortie DVI
  - Mémoire DDR
