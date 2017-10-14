@@ -1,8 +1,23 @@
-#Generated Cores
+# ISE Project
+ise_project/iseconfig/
+ise_project/xst/
+ise_project/_ngo/
+ise_project/_xmsgs/
+
+# intermediate build files
+ise_project/*
+!ise_project/*.xise
+
+# Generated Cores
 src_coregen/*
 !src_coregen/*.xco
 
-#Ignore OS noise
+# Ignore OS noise
 Thumbs.db
 .DS_Store
 .directory
+
+# IDE project file
+*/.idea
+*.sublime*
+*.swp
