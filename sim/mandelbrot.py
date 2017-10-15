@@ -20,9 +20,76 @@ def color(mag):
     # Normalize to 0-1
     try: x = float(mag-cmin)/(cmax-cmin)
     except ZeroDivisionError: x = 0.5 # cmax == cmin
-    blue  = int(min((max((4*(0.75-x), 0.)), 1.))*255)
-    red   = int(min((max((4*(x-0.25), 0.)), 1.))*255)
-    green = int(min((max((4*math.fabs(x-0.5)-1., 0.)), 1.))*255)
+    blue = 0
+    red = 0
+    green = 0
+    if x < 1.0:
+        #blue  = int(min((max((4*(0.75-x), 0.)), 1.))*255)
+        #red   = int(min((max((4*(x-0.25), 0.)), 1.))*255)
+        #green = int(min((max((4*math.fabs(x-0.5)-1., 0.)), 1.))*255)
+
+        # # Full HSV -> RGB
+        # hue = x
+        # sat = 1.0
+        # val = 1.0
+        #
+        # c_val = val * sat
+        # x_val = c_val * (1 - abs(((hue / (1.0/6.0)) % 2) - 1))
+        # m_val = val - c_val
+        #
+        # if hue >= 5.0/6.0:
+        #     red = (c_val+m_val)*255
+        #     green = (0.0+m_val)*255
+        #     blue = (x_val+m_val)*255
+        # elif hue >= 4.0/6.0:
+        #     red = (x_val+m_val)*255
+        #     green = (0.0+m_val)*255
+        #     blue = (c_val+m_val)*255
+        # elif hue >= 3.0/6.0:
+        #     red = (0.0+m_val)*255
+        #     green = (x_val+m_val)*255
+        #     blue = (c_val+m_val)*255
+        # elif hue >= 2.0/6.0:
+        #     red = (0.0+m_val)*255
+        #     green = (c_val+m_val)*255
+        #     blue = (x_val+m_val)*255
+        # elif hue >= 1.0/6.0:
+        #     red = (x_val+m_val)*255
+        #     green = (c_val+m_val)*255
+        #     blue = (0.0+m_val)*255
+        # else:
+        #     red = (c_val+m_val)*255
+        #     green = (x_val+m_val)*255
+        #     blue = (0.0+m_val)*255
+
+        # Light version
+        x_val = 1 - abs(((x / (1.0/6.0)) % 2) - 1)
+
+        if x >= 5.0/6.0:
+            red = 255
+            green = 0
+            blue = x_val*255
+        elif x >= 4.0/6.0:
+            red = x_val*255
+            green = 0
+            blue = 255
+        elif x >= 3.0/6.0:
+            red = 0
+            green = x_val*255
+            blue = 255
+        elif x >= 2.0/6.0:
+            red = 0
+            green = 255
+            blue = x_val*255
+        elif x >= 1.0/6.0:
+            red = x_val*255
+            green = 255
+            blue = 0
+        else:
+            red = 255
+            green = x_val*255
+            blue = 0
+
     return (red, green, blue)
 
 def color2(mag):
@@ -32,8 +99,8 @@ def color2(mag):
 def main_gui():
 
     c_start, c_end = -2 +1j, 1 - 1j
-    WIDTH, HEIGHT = 1280, 1024
-    #WIDTH, HEIGHT = 320, 240
+    #WIDTH, HEIGHT = 1280, 1024
+    WIDTH, HEIGHT = 320, 240
     SF = 1
 
     def pix2c(x, y):
