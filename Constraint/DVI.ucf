@@ -50,3 +50,70 @@ NET "DVI_XCLK_P"  LOC = "C20" | SLEW = FAST | IOSTANDARD = LVCMOS25 | DRIVE = 12
 # LEDs
 NET "RESET_IP_o"  LOC = "D17";   ## 2   on DS3 LED
 NET "BLINK_o"     LOC = "AB4";   ## 2   on DS4 LED
+
+# DDR MEMORY
+NET "MEM1_A<0>"                       LOC = "K2" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<1>"                       LOC = "K1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<2>"                       LOC = "K5" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<3>"                       LOC = "M6" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<4>"                       LOC = "H3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<5>"                       LOC = "M3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<6>"                       LOC = "L4" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<7>"                       LOC = "K6" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<8>"                       LOC = "G3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<9>"                       LOC = "G1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<10>"                      LOC = "J4" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<11>"                      LOC = "E1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<12>"                      LOC = "F1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<13>"                      LOC = "J6" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_A<14>"                      LOC = "H5" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_BA<0>"                      LOC = "J3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_BA<1>"                      LOC = "J1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_BA<2>"                      LOC = "H1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_CAS_B"                    LOC = "M4" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_CKE"                      LOC = "F2" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_CLK_N"                    LOC = "K3" | IOSTANDARD = DIFF_SSTL15_II  | OUT_TERM = UNTUNED_50;
+NET "MEM1_CLK_P"                    LOC = "K4" | IOSTANDARD = DIFF_SSTL15_II  | OUT_TERM = UNTUNED_50;
+NET "MEM1_DQ<0>"                      LOC = "R3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<1>"                      LOC = "R1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<2>"                      LOC = "P2" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<3>"                      LOC = "P1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<4>"                      LOC = "L3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<5>"                      LOC = "L1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<6>"                      LOC = "M2" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<7>"                      LOC = "M1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<8>"                      LOC = "T2" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<9>"                      LOC = "T1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<10>"                     LOC = "U3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<11>"                     LOC = "U1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<12>"                     LOC = "W3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<13>"                     LOC = "W1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<14>"                     LOC = "Y2" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_DQ<15>"                     LOC = "Y1" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_LDM"                      LOC = "N4" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_LDQS_N"                   LOC = "N1" | IOSTANDARD = DIFF_SSTL15_II  | OUT_TERM = UNTUNED_50;
+NET "MEM1_LDQS_P"                   LOC = "N3" | IOSTANDARD = DIFF_SSTL15_II  | OUT_TERM = UNTUNED_50;
+NET "MEM1_ODT"                      LOC = "L6" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_RAS_B"                    LOC = "M5" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_RESET_B"                  LOC = "E3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_UDM"                      LOC = "P3" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+NET "MEM1_UDQS_N"                   LOC = "V1" | IOSTANDARD = DIFF_SSTL15_II  | OUT_TERM = UNTUNED_50;
+NET "MEM1_UDQS_P"                   LOC = "V2" | IOSTANDARD = DIFF_SSTL15_II  | OUT_TERM = UNTUNED_50;
+NET "MEM1_WE_B"                     LOC = "H2" | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50; 
+
+
+
+##################################################################################
+#RZQ is required for all MCB designs.   Do not move the location #
+#of this pin for ES devices.For production devices, RZQ can be moved to any #
+#valid package pin within the MCB bank.For designs using Calibrated Input Termination, #
+#a 2R resistor should be connected between RZQand ground, where R is the desired#
+#input termination value.  Otherwise, RZQ should be left as a no-connect (NC) pin.#
+##################################################################################
+NET  "RZQ"                                  LOC = "K7"  | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50;
+##################################################################################
+#ZIO is only required for MCB designs using Calibrated Input Termination.#
+#ZIO can be moved to any valid package pin (i.e. bonded IO) within the#
+#MCB bank but must be left as a no-connect (NC) pin.#
+##################################################################################
+NET  "ZIO"                                  LOC = "M7"  | IOSTANDARD = SSTL15_II  | OUT_TERM = UNTUNED_50;

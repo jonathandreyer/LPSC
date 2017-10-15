@@ -8,8 +8,8 @@ entity IP_MandelbrotGenerator is
            FRACTIONAL     : integer := 13;
            SIZE_ITER      : integer := 8;
            MAX_ITERATION  : integer := 100;
-           X_SCREEN_SIZE  : integer := 512;
-           Y_SCREEN_SIZE  : integer := 512;
+           X_SCREEN_SIZE  : integer := 1024;
+           Y_SCREEN_SIZE  : integer := 1024;
            SIZE_SCREEN    : integer := 11
           );
 
@@ -18,6 +18,7 @@ entity IP_MandelbrotGenerator is
         rst_i       : in  std_logic;
         x_o         : out std_logic_vector(SIZE_SCREEN-1 downto 0);
         y_o         : out std_logic_vector(SIZE_SCREEN-1 downto 0);
+		  trigger_i   : in  std_logic;
         finish_o    : out std_logic;
         iteration_o : out std_logic_vector(SIZE_ITER-1 downto 0)
        );
@@ -33,7 +34,6 @@ architecture Behavioral of IP_MandelbrotGenerator is
   signal c_im_s         : std_logic_vector(SIZE_COMPLEX-1 downto 0);
   signal z_re_1_s       : std_logic_vector(SIZE_COMPLEX-1 downto 0);
   signal z_im_1_s       : std_logic_vector(SIZE_COMPLEX-1 downto 0);
-  signal finished_s     : std_logic;
 
   component MandelbrotManageGenerator
     port (
@@ -90,7 +90,7 @@ begin
     port map (
       clk_i          => clk_i,
       rst_i          => rst_i,
-      finish_i       => finished_s,
+      finish_i       => trigger_i,
       next_value_o   => next_value_s,
       next_value_1_o => next_value_1_s
     );
@@ -129,9 +129,8 @@ begin
       z_re_o      => z_re_1_s,
       z_im_o      => z_im_1_s,
       iteration_o => iteration_o,
-      finish_o    => finished_s
+      finish_o    => finish_o
     );
 
-  finish_o <= finished_s;
 
 end architecture Behavioral;

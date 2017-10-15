@@ -5,52 +5,8 @@ ise_project/_ngo/
 ise_project/_xmsgs/
 
 # intermediate build files
-ise_project/*.bgn
-ise_project/*.bit
-ise_project/*.bld
-ise_project/*.cmd_log
-ise_project/*.drc
-ise_project/*.lso
-ise_project/*.gise
-ise_project/*.ncd
-ise_project/*.ngc
-ise_project/*.ngd
-ise_project/*.ngr
-ise_project/*.pad
-ise_project/*.par
-ise_project/*.pcf
-ise_project/*.prj
-ise_project/*.ptwx
-ise_project/*.stx
-ise_project/*.syr
-ise_project/*.twr
-ise_project/*.twx
-ise_project/*.unroutes
-ise_project/*.ut
-ise_project/*.xpi
-ise_project/*.xst
-ise_project/*_bitgen.xwbt
-ise_project/*_envsettings.html
-ise_project/*_map.map
-ise_project/*_map.mrp
-ise_project/*_map.ngm
-ise_project/*_map.xrpt
-ise_project/*_ngdbuild.xrpt
-ise_project/*_pad.csv
-ise_project/*_pad.txt
-ise_project/*_par.xrpt
-ise_project/*_summary.html
-ise_project/*_summary.xml
-ise_project/*_usage.xml
-ise_project/*_xst.xrpt
-ise_project/**/*.xbcd
-ise_project/par_usage_statistics.html
-ise_project/usage_statistics_webtalk.html
-ise_project/webtalk.log
-ise_project/webtalk_pn.xml
-ise_project/planAhead*
-ise_project/pa*.tcl
-ise_project/*.xdl
+ise_project/*
+!ise_project/*.xise
 
 # Generated Cores
 src_coregen/*
@@ -63,3 +19,8 @@ Thumbs.db
 
 # Generated doc
 */build/*
+
+# IDE project file
+*/.idea
+*.sublime*
+*.swp
