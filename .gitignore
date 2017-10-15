@@ -17,6 +17,9 @@ Thumbs.db
 .DS_Store
 .directory
 
+# Generated doc
+*/build/*
+
 # IDE project file
 */.idea
 *.sublime*
