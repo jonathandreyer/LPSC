@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Wed May 10 10:23:22 2017
+# Date: Tue May 23 15:24:17 2017
 #
 ##############################################################
 #
@@ -77,6 +77,8 @@ CSET primitive=8kx2
 CSET read_width_a=7
 CSET read_width_b=7
 CSET register_porta_input_of_softecc=false
+CSET register_porta_output_of_memory_core=false
+CSET register_porta_output_of_memory_primitives=false
 CSET register_portb_output_of_memory_core=true
 CSET register_portb_output_of_memory_primitives=false
 CSET register_portb_output_of_softecc=false
